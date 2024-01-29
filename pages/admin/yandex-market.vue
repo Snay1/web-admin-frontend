@@ -1,9 +1,15 @@
 <script setup>
-    import { AdminWrapper, AdminTitle } from '~/components/admin';
-    import { VFragment } from "~/components";
+    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { useAccessStore } from "~/store";
 
     useHead({
         title: "Admin - Yandex Market"
+    });
+
+    const access = useAccessStore();
+
+    onMounted(async () => {   
+        await access.getYandexMarketKeys();
     });
 
 </script>
@@ -12,7 +18,8 @@
         <AdminTitle>
             Yandex Market
         </AdminTitle>
-        <VFragment>
-        </VFragment>
+        <AccessCheckHandler shopName="Yandex Market" :accessExists="!!(access.yandexMarketKeys.client_id && access.yandexMarketKeys.client_secret)">
+
+        </AccessCheckHandler>
     </AdminWrapper>
 </template>

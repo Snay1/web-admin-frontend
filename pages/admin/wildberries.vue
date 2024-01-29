@@ -1,9 +1,15 @@
 <script setup>
-    import { AdminWrapper, AdminTitle } from '~/components/admin';
-    import { VFragment } from "~/components";
+    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { useAccessStore } from "~/store";
 
     useHead({
         title: "Admin - Wildberries"
+    });
+
+    const access = useAccessStore();
+
+    onMounted(async () => {   
+        await access.getWbKeys();
     });
 
 </script>
@@ -12,7 +18,8 @@
         <AdminTitle>
             Wildberries
         </AdminTitle>
-        <VFragment>
-        </VFragment>
+        <AccessCheckHandler shopName="Wildberries" :accessExists="!!(access.wbKeys.headerApiKey)">
+
+        </AccessCheckHandler>
     </AdminWrapper>
 </template>

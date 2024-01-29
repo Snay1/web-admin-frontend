@@ -1,9 +1,15 @@
 <script setup>
-    import { AdminWrapper, AdminTitle } from '~/components/admin';
-    import { VFragment } from "~/components";
+    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { useAccessStore } from "~/store";
 
     useHead({
         title: "Admin - Ozon"
+    });
+
+    const access = useAccessStore();
+
+    onMounted(async () => {   
+        await access.getOzonKeys();
     });
 
 </script>
@@ -12,7 +18,8 @@
         <AdminTitle>
             Ozon
         </AdminTitle>
-        <VFragment>
-        </VFragment>
+        <AccessCheckHandler shopName="Ozon" :accessExists="!!(access.ozonKeys.apiKey && access.ozonKeys.clientId)">
+
+        </AccessCheckHandler>
     </AdminWrapper>
 </template>

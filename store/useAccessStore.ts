@@ -1,86 +1,143 @@
 import { defineStore } from 'pinia';
-import type { SessionType } from '~/types/api/SessionType';
 import axios from '~/axios';
+import type { 
+    AvitoKeysType,
+    OzonKeysType, 
+    WbKeysType, 
+    YandexMarketKeysType 
+} from '~/types/api';
 
-const useUserStore = defineStore("user", {
+const statusInitial = {
+    loading: true,
+    error: false,
+}
+
+const useAccessStore = defineStore("access", {
     state: () => ({
         ozonKeys: {
-            apiKey: "",
-            clientId: "",
-        },
+            apiKey: null,
+            clientId: null,
+        } as OzonKeysType,
         wbKeys: {
-            headerApiKey: "",
-        },
+            headerApiKey: null,
+        } as WbKeysType,
+        avitoKeys: {
+            client_id: null,
+            client_secret: null,
+        } as AvitoKeysType,
+        yandexMarketKeys: {
+            client_id: null,
+            client_secret: null,
+        } as YandexMarketKeysType,
         status: {
-            loading: true,
-            error: false,
+            ozon: statusInitial,
+            wb: statusInitial,
+            avito: statusInitial,
+            yandexMarket: statusInitial,
         },
     }),
     actions: {
-        async fetchOzon() {
+        async getOzonKeys() {
 
-            if (this.ozonKeys) {
+            if (this.ozonKeys.apiKey && this.ozonKeys.clientId) {
                 return;
             }
 
             try {
-                this.status.loading = true;
+                this.status.ozon.loading = true;
 
-                const res = await axios(`/ozon`);
+                const res = await axios<OzonKeysType>("/keys/ozon");
 
-                if (!res) {
+                if (!res.data) {
                     throw Error();
                 }
 
-                this.ozonKeys = res;
+                this.ozonKeys = res.data;
 
-                this.status.error = false;
+                this.status.ozon.error = false;
             } catch (error) {
-                this.status.error = true;
+                this.status.ozon.error = true;
             } finally {
-                this.status.loading = false;
+                this.status.ozon.loading = false;
             }
 
         },
-        async login(email: string, password: string) {
+        async getWbKeys() {
 
-            if (!email|| !password) {
+            if (this.wbKeys) {
                 return;
             }
 
             try {
-                const res = await axios.post(`/auth/sign-in`, {
-                    email,
-                    password
-                });
+                this.status.wb.loading = true;
 
-                if (res.status !== 200) {
+                const res = await axios<WbKeysType>("/keys/wildberries");
+
+                if (!res.data) {
                     throw Error();
                 }
 
-                await this.fetchUser();
+                this.wbKeys = res.data;
 
+                this.status.wb.error = false;
             } catch (error) {
-                
+                this.status.wb.error = true;
+            } finally {
+                this.status.wb.loading = false;
             }
-        },
-        async logout() {
-            try {
-                const res = await axios.post(`/auth/sign-out`);
 
-                if (res.status !== 200) {
-                    return;
+        },
+        async getAvitoKeys() {
+
+            if (this.avitoKeys) {
+                return;
+            }
+
+            try {
+                this.status.avito.loading = true;
+
+                const res = await axios<AvitoKeysType>("/keys/avito");
+
+                if (!res.data) {
+                    throw Error();
                 }
 
-                this.user = null;
- 
-                return true;
+                this.avitoKeys = res.data;
+
+                this.status.avito.error = false;
+            } catch (error) {
+                this.status.avito.error = true;
+            } finally {
+                this.status.avito.loading = false;
+            }
+
+        },
+        async getYandexMarketKeys() {
+
+            if (this.avitoKeys) {
+                return;
+            }
+
+            try {
+                this.status.yandexMarket.loading = true;
+
+                const res = await axios<YandexMarketKeysType>("/keys/yandex-market");
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.yandexMarketKeys = res.data;
+                this.status.yandexMarket.error = false;
 
             } catch (error) {
-                
+                this.status.yandexMarket.error = true;
+            } finally {
+                this.status.yandexMarket.loading = false;
             }
+
         }
     },
 });
 
-export default useUserStore;
+export default useAccessStore;

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-    import { useUserStore } from "#imports";
+    import { useUserStore } from "~/store";
 
     import { VFragment } from '.';
 
@@ -9,7 +9,6 @@
     onMounted(async () => {
         await userStore.fetchUser();
     })
-
 
 </script>
 <template>

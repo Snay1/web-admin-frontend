@@ -8,3 +8,4 @@ export { default as AdminCreateEditPageForm } from "./AdminCreateEditPageForm.vu
 export { default as AdminCheckbox } from "./AdminCheckbox.vue";
 export { default as AdminPageTop } from "./AdminPageTop.vue";
 export { default as AdminSelect } from "./AdminSelect.vue";
+export { default as AccessCheckHandler } from "./AccessCheckHandler.vue";
