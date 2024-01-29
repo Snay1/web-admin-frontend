@@ -62,6 +62,30 @@ const useAccessStore = defineStore("access", {
             }
 
         },
+        async editOzonKeys(apiKey: string, clientId: string) {
+
+            try {
+
+                const res = await axios.post<OzonKeysType>("/keys/ozon", {
+                    apiKey,
+                    clientId
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.ozonKeys = res.data;
+
+                alert("Ozon ключи обновлены!");
+
+                return { apiKey, clientId };
+
+            } catch (error) {
+                alert("Не получилось обновить ключи Ozon");
+            }
+
+        },
         async getWbKeys() {
 
             if (this.wbKeys) {
@@ -84,6 +108,29 @@ const useAccessStore = defineStore("access", {
                 this.status.wb.error = true;
             } finally {
                 this.status.wb.loading = false;
+            }
+
+        },
+        async editWbKeys(headerApiKey: string) {
+
+            try {
+
+                const res = await axios.post<WbKeysType>("/keys/wildberries", {
+                    headerApiKey,
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.wbKeys = res.data;
+
+                alert("Wildberries ключи обновлены!");
+
+                return { headerApiKey };
+
+            } catch (error) {
+                alert("Не получилось обновить ключи Wildberries");
             }
 
         },
@@ -112,6 +159,30 @@ const useAccessStore = defineStore("access", {
             }
 
         },
+        async editAvitoKeys(client_id: string, client_secret: string) {
+
+            try {
+
+                const res = await axios.post<AvitoKeysType>("/keys/avito", {
+                    client_id,
+                    client_secret
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.avitoKeys = res.data;
+
+                alert("Avito ключи обновлены!");
+
+                return { client_id, client_secret };
+
+            } catch (error) {
+                alert("Не получилось обновить ключи Avito");
+            }
+
+        },
         async getYandexMarketKeys() {
 
             if (this.avitoKeys) {
@@ -136,7 +207,31 @@ const useAccessStore = defineStore("access", {
                 this.status.yandexMarket.loading = false;
             }
 
-        }
+        },
+        async editYandexMarketKeys(client_id: string, client_secret: string) {
+
+            try {
+
+                const res = await axios.post<YandexMarketKeysType>("/keys/yandex-market", {
+                    client_id,
+                    client_secret
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.avitoKeys = res.data;
+
+                alert("Yandex Market ключи обновлены!");
+
+                return { client_id, client_secret };
+
+            } catch (error) {
+                alert("Не получилось обновить ключи Yandex Market");
+            }
+
+        },
     },
 });
 
