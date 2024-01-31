@@ -1,0 +1,1 @@
+export { default as OzonItem } from "./OzonItem.vue";
