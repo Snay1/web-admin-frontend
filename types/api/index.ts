@@ -10,3 +10,4 @@ export type { YandexMarketKeysType } from "./keys/YandexMarketKeysType";
 export type { OzonProductListType } from "./ozon/OzonProductListType";
 export type { OzonProductItemInfo } from "./ozon/OzonProductItemInfo";
 export type { OzonStocksType } from "./ozon/OzonProductItemInfo";
+export type { OzonInfoLimitType } from "./ozon/OzonInfoLimitType";

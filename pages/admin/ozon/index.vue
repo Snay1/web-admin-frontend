@@ -12,14 +12,14 @@
 
     onMounted(async () => {   
         await access.getOzonKeys();
-        await ozonStore.getOzonItemList({
+
+        const keysObject = {
             apiKey: access.ozonKeys.apiKey,
             clientId: access.ozonKeys.clientId
-        });
-        await ozonStore.getOzonItemInfoList({
-            apiKey: access.ozonKeys.apiKey,
-            clientId: access.ozonKeys.clientId
-        });
+        }
+
+        await ozonStore.getOzonItemList(keysObject);
+        await ozonStore.getOzonItemInfoList(keysObject);
     });
 
 </script>
@@ -37,6 +37,7 @@
                     :price="item.price"
                     :stocks="item.stocks"
                     :currency="item.currency_code"
+                    :id="item.id"
                 />
             </ul>
         </AccessCheckHandler>
