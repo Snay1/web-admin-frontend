@@ -20,6 +20,8 @@ import { baseOzonUrl } from "~/common";
     const name = ref("");
     const stocks = ref(0);
     const price = ref(0);
+    const oldPrice = ref(0);
+    const minPrice = ref(0);
 
     const loading = ref(true);
     const error = ref(false);
@@ -52,13 +54,12 @@ import { baseOzonUrl } from "~/common";
         }
 
         const res = await ozonStore.updateProductById({
+            product_id: product.value.id,
             offer_id: product.value.offer_id,
-            name: name.value,
             price: price.value.toString(),
-            primary_image: product.value.primary_image,
+            min_price: minPrice.value.toString(),
+            old_price: oldPrice.value.toString(),
             stocks: stocks.value,
-            vat: product.value.vat,
-            images: product.value.images,
         }, {
             clientId: access.ozonKeys.clientId,
             apiKey: access.ozonKeys.apiKey,
@@ -75,7 +76,7 @@ import { baseOzonUrl } from "~/common";
             price: price.value.toString(),
             stocks: {
                 ...product.value.stocks,
-                present: stocks.value,
+                present: Number(stocks.value),
             },
         }
     }
@@ -102,8 +103,9 @@ import { baseOzonUrl } from "~/common";
         } else {
             stocks.value = product.value.stocks.present;
             price.value = Number(product.value.price);
+            oldPrice.value = Number(product.value.old_price);
+            minPrice.value = Number(product.value.min_price);
             name.value = product.value.name;
-            getRequiredAttributes();
         }
 
     });
@@ -123,14 +125,14 @@ import { baseOzonUrl } from "~/common";
                     </div>
                     <div class="w-full">
                         <h1 class="text-2xl font-bold mb-[20px]">{{ product.name }}</h1>
-                        <div class="mb-[10px]">
+                        <!-- <div class="mb-[10px]">
                             <h4 class="mb-[10px] font-bold text-lg">Название</h4>
                             <AdminInput 
                                 :value="name"
                                 placeholder="Название товара"
                                 @input="(e) => name = e.target.value"
                             />
-                        </div>
+                        </div> -->
                         <div class="grid grid-cols-1 xl:grid-cols-2 gap-[10px]">
                             <div>
                                 <h4 class="mb-[10px] font-bold text-lg">Количество на складе</h4>
@@ -148,6 +150,24 @@ import { baseOzonUrl } from "~/common";
                                     :value="price.toString()"
                                     placeholder="Цена"
                                     @input="(e) => price = e.target.value"
+                                />
+                            </div>
+                            <div>
+                                <h4 class="mb-[10px] font-bold text-lg">Старая цена</h4>
+                                <AdminInput 
+                                    type="number"
+                                    :value="oldPrice.toString()"
+                                    placeholder="Старая цена"
+                                    @input="(e) => oldPrice = e.target.value"
+                                />
+                            </div>
+                            <div>
+                                <h4 class="mb-[10px] font-bold text-lg">Минимальная цена</h4>
+                                <AdminInput 
+                                    type="number"
+                                    :value="oldPrice.toString()"
+                                    placeholder="Минимальная цена"
+                                    @input="(e) => oldPrice = e.target.value"
                                 />
                             </div>
                         </div>

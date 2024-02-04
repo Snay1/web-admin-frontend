@@ -10,13 +10,12 @@ interface OzonKeysObject {
 }
 
 interface ProductUpdateType {
+    product_id: number;
     offer_id: string;
-    name: string;
     price: string;
-    primary_image: string;
+    old_price: string;
+    min_price: string;
     stocks: number;
-    vat: string;
-    images: string[];
 }
 
 const useOzonProductsStore = defineStore("ozonStore", {
@@ -157,50 +156,66 @@ const useOzonProductsStore = defineStore("ozonStore", {
 
         },
         async updateProductById({
+            product_id,
             offer_id,
-            name,
             price,
-            primary_image,
+            old_price,
+            min_price,
             stocks,
-            images,
-            vat,
         }: ProductUpdateType, {
             clientId,
             apiKey,
         }: OzonKeysObject) {
+
+            const headers = {
+                "Client-Id": clientId,
+                "Api-Key": apiKey
+            }
+
             try {
 
-                const res = await axios.post(`${baseOzonUrl}/v3/product/import`, {
-                    items: [
+                const priceRes = await axios.post(`${baseOzonUrl}/v1/product/import/prices`, {
+                    prices: [
                         {
+                            auto_action_enabled: "UNKNOWN",
+                            currency_code: "RUB",
+                            price_strategy_enabled: "UNKNOWN",
+                            min_price,
                             offer_id,
-                            name,
+                            old_price,
                             price,
-                            primary_image,
-                            stocks,
-                            images,
-                            vat,
                         }
-                    ],
+                    ]
                 }, {
-                    headers: {
-                        "Client-Id": clientId,
-                        "Api-Key": apiKey
-                    }
+                    headers
                 });
 
-                if (!res.data) {
+                if (!priceRes.data) {
+                    throw Error();
+                }
+
+                const stocksRes = await axios.post(`${baseOzonUrl}/v1/product/import/stocks`, {
+                    stocks: [
+                        {
+                            offer_id,
+                            product_id,
+                            stock: stocks,
+                        }
+                    ]
+                }, {
+                    headers
+                });
+
+                if (!stocksRes.data) {
                     throw Error();
                 }
 
                 this.itemsInfoList = [...this.itemsInfoList.map((item) => {
 
-                    if (item.offer_id === offer_id) {
+                    if (item.id === product_id) {
                         return {
                             ...item,
-                            name,
                             price,
-                            primary_image,
                             stocks: {
                                 ...item.stocks,
                                 present: stocks,
