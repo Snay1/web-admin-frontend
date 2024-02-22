@@ -1,4 +1,5 @@
 <script setup>
+    import { onMounted } from "vue";
     import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
     import { useAccessStore } from "~/store";
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { onMounted, ref } from 'vue';
+    import { AdminWrapper, AdminTitle, AccessCheckHandler, AdminInput } from '~/components/admin';
     import { OzonItem } from '~/components/ozon-components';
     import { useAccessStore, useOzonProductsStore } from "~/store";
 
@@ -9,6 +10,8 @@
 
     const access = useAccessStore();
     const ozonStore = useOzonProductsStore();
+
+    const searchValue = ref("");
 
     onMounted(async () => {   
         await access.getOzonKeys();
@@ -29,6 +32,12 @@
             Ozon
         </AdminTitle>
         <AccessCheckHandler shopName="Ozon" :accessExists="!!(access.ozonKeys.apiKey && access.ozonKeys.clientId)">
+            <AdminInput 
+                placeholder="Поиск товара..."
+                :value="searchValue"
+                @input="e => searchValue = e.target.value"
+                class="mb-[20px]"
+            />
             <ul class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-[20px]" v-if="ozonStore.itemsInfoList.length">
                 <OzonItem 
                     v-for="item in ozonStore.itemsInfoList"

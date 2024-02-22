@@ -88,7 +88,7 @@ const useAccessStore = defineStore("access", {
         },
         async getWbKeys() {
 
-            if (this.wbKeys) {
+            if (this.wbKeys.headerApiKey) {
                 return;
             }
 
