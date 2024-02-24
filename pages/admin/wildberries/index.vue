@@ -1,6 +1,6 @@
 <script setup>
     import { onMounted } from "vue";
-    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { AdminWrapper, Title, AccessCheckHandler } from '~/components';
     import { WbItem } from "~/components/wb-components/index";
     import { useAccessStore, useWbProductsStore } from "~/store";
 
@@ -24,9 +24,9 @@
 </script>
 <template>
     <AdminWrapper>
-        <AdminTitle>
+        <Title>
             Wildberries
-        </AdminTitle>
+        </Title>
         <AccessCheckHandler shopName="Wildberries" :accessExists="!!(access.wbKeys.headerApiKey)">
             <MainGrid v-if="wbStore.itemsList.length">
                 <WbItem 

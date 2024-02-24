@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue';
-    import { AdminWrapper, AdminTitle, AccessCheckHandler, AdminInput } from '~/components/admin';
+    import { AdminWrapper, Title, AccessCheckHandler, Input } from '~/components';
     import { OzonItem } from '~/components/ozon-components';
     import { MainGrid } from '~/components/index';
     import { useAccessStore, useOzonProductsStore } from "~/store";
@@ -29,11 +29,11 @@
 </script>
 <template>
     <AdminWrapper>
-        <AdminTitle>
+        <Title>
             Ozon
-        </AdminTitle>
+        </Title>
         <AccessCheckHandler shopName="Ozon" :accessExists="!!(access.ozonKeys.apiKey && access.ozonKeys.clientId)">
-            <AdminInput 
+            <Input 
                 placeholder="Поиск товара..."
                 :value="searchValue"
                 @input="e => searchValue = e.target.value"

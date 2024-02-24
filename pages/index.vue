@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import { useUserStore } from "~/store";
-    import { Button } from '~/components';
-    import { AdminInput } from '~/components/admin';
+    import { Button, Input } from '~/components';
 
     const router = useRouter();
 
@@ -44,13 +43,13 @@
     <div class="w-full h-full flex items-center justify-center">
         <form class="flex flex-col gap-4" @submit.prevent="loginHandler">
             <h1 class="text-center text-2xl uppercase font-bold text-slate-700">Мультиадминка</h1>
-            <AdminInput 
+            <Input 
                 type="email"
                 :value="email"
                 placeholder="Email"
                 @input="(e) => email = e.target.value"
             />
-            <AdminInput 
+            <Input 
                 type="password"
                 :value="password"
                 placeholder="Пароль"

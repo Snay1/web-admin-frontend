@@ -1,5 +1,5 @@
 <script setup>
-    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { AdminWrapper, Title, AccessCheckHandler } from '~/components';
     import { useAccessStore } from "~/store";
 
     useHead({
@@ -15,9 +15,9 @@
 </script>
 <template>
     <AdminWrapper>
-        <AdminTitle>
+        <Title>
             Yandex Market
-        </AdminTitle>
+        </Title>
         <AccessCheckHandler shopName="Yandex Market" :accessExists="!!(access.yandexMarketKeys.client_id && access.yandexMarketKeys.client_secret)">
 
         </AccessCheckHandler>

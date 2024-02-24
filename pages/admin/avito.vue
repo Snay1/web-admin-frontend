@@ -1,5 +1,5 @@
 <script setup>
-    import { AdminWrapper, AdminTitle, AccessCheckHandler } from '~/components/admin';
+    import { AdminWrapper, Title, AccessCheckHandler } from '~/components';
     import { useAccessStore } from "~/store";
 
     useHead({
@@ -15,9 +15,9 @@
 </script>
 <template>
     <AdminWrapper>
-        <AdminTitle>
+        <Title>
             Avito
-        </AdminTitle>
+        </Title>
         <AccessCheckHandler shopName="Avito" :accessExists="!!(access.avitoKeys.client_id && access.avitoKeys.client_secret)">
 
         </AccessCheckHandler>

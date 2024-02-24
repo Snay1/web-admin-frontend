@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
-    type AdminInputType = "input" | "textarea"; 
+    type InputType = "input" | "textarea"; 
 
     defineProps({
         value: {
@@ -17,7 +17,7 @@ import type { PropType } from 'vue';
             required: false,
         },
         inputType: {
-            type: String as PropType<AdminInputType>,
+            type: String as PropType<InputType>,
             required: false,
         },
     });

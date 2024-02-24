@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import { ref } from "vue";
-    import { AdminWrapper, AdminInput, AccessCheckHandler, CardImg } from '~/components/admin';
-    import { VFragment, Button } from '~/components';
+    import { VFragment, Button, AdminWrapper, Input, AccessCheckHandler, CardImg, CardInput } from '~/components';
     import { useAccessStore, useOzonProductsStore } from "~/store";
     import type { OzonProductItemInfo } from "~/types/api";
     import axios from "axios";
@@ -124,49 +123,37 @@
                         <h1 class="text-2xl font-bold mb-[20px]">{{ product.name }}</h1>
                         <!-- <div class="mb-[10px]">
                             <h4 class="mb-[10px] font-bold text-lg">Название</h4>
-                            <AdminInput 
+                            <Input 
                                 :value="name"
                                 placeholder="Название товара"
                                 @input="(e) => name = e.target.value"
                             />
                         </div> -->
                         <div class="grid grid-cols-1 xl:grid-cols-2 gap-[10px]">
-                            <div>
-                                <h4 class="mb-[10px] font-bold text-lg">Количество на складе</h4>
-                                <AdminInput 
-                                    type="number"
-                                    :value="stocks.toString()"
-                                    placeholder="Количество товара на складе"
-                                    @input="(e) => stocks = e.target.value"
-                                />
-                            </div>
-                            <div>
-                                <h4 class="mb-[10px] font-bold text-lg">Цена (в рублях)</h4>
-                                <AdminInput 
-                                    type="number"
-                                    :value="price.toString()"
-                                    placeholder="Цена"
-                                    @input="(e) => price = e.target.value"
-                                />
-                            </div>
-                            <div>
-                                <h4 class="mb-[10px] font-bold text-lg">Старая цена</h4>
-                                <AdminInput 
-                                    type="number"
-                                    :value="oldPrice.toString()"
-                                    placeholder="Старая цена"
-                                    @input="(e) => oldPrice = e.target.value"
-                                />
-                            </div>
-                            <div>
-                                <h4 class="mb-[10px] font-bold text-lg">Минимальная цена</h4>
-                                <AdminInput 
-                                    type="number"
-                                    :value="minPrice.toString()"
-                                    placeholder="Минимальная цена"
-                                    @input="(e) => minPrice = e.target.value"
-                                />
-                            </div>
+                            <CardInput 
+                                type="number"
+                                :value="stocks.toString()"
+                                placeholder="Количество товара на складе"
+                                @input="(e) => stocks = e.target.value"
+                            />
+                            <CardInput 
+                                type="number"
+                                :value="price.toString()"
+                                placeholder="Цена (в рублях)"
+                                @input="(e) => price = e.target.value"
+                            />
+                            <CardInput 
+                                type="number"
+                                :value="oldPrice.toString()"
+                                placeholder="Старая цена"
+                                @input="(e) => oldPrice = e.target.value"
+                            />
+                            <CardInput 
+                                type="number"
+                                value="minPrice.toString()"
+                                placeholder="Минимальная цена"
+                                @input="(e) => minPrice = e.target.value"
+                            />
                         </div>
                         <Button buttonClass="w-full mt-[20px]" @click="saveProduct">
                             Сохранить

@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { ref } from "vue";
-    import { AdminWrapper, AdminTitle, AdminInput } from '~/components/admin';
+    import { AdminWrapper, Title, Input } from '~/components';
     import { Button } from '~/components';
     import { useAccessStore } from "~/store";
 
@@ -125,20 +125,20 @@
 </script>
 <template>
     <AdminWrapper>
-        <AdminTitle>
+        <Title>
             Доступы к сервисам
-        </AdminTitle>
+        </Title>
         <form @submit="saveOzonKeys">
             <h2 class="text-xl font-bold">
                 Ozon
             </h2>
             <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <AdminInput 
+                <Input 
                     placeholder="Api Key"
                     :value="ozonApiKey"
                     @input="(e) => ozonApiKey = e.target.value"
                 />
-                <AdminInput 
+                <Input 
                     placeholder="Client Id"
                     :value="ozonClientId"
                     @input="(e) => ozonClientId = e.target.value"
@@ -154,7 +154,7 @@
                 Wildberries
             </h2>
             <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <AdminInput 
+                <Input 
                     placeholder="Header Api Key"
                     :value="wbHeaderApiKey"
                     @input="(e) => wbHeaderApiKey = e.target.value"
@@ -170,12 +170,12 @@
                 Avito
             </h2>
             <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <AdminInput 
+                <Input 
                     placeholder="client_id"
                     :value="avitoClientId"
                     @input="(e) => avitoClientId = e.target.value"
                 />
-                <AdminInput 
+                <Input 
                     placeholder="client_secret"
                     :value="avitoClientSecret"
                     @input="(e) => avitoClientSecret = e.target.value"
@@ -191,12 +191,12 @@
                 Yandex Market
             </h2>
             <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <AdminInput 
+                <Input 
                     placeholder="client_id"
                     :value="avitoClientId"
                     @input="(e) => avitoClientId = e.target.value"
                 />
-                <AdminInput 
+                <Input 
                     placeholder="client_secret"
                     :value="avitoClientSecret"
                     @input="(e) => avitoClientSecret = e.target.value"

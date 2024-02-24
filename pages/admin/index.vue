@@ -1,6 +1,5 @@
 <script setup>
-    import { AdminWrapper, AdminTitle } from '~/components/admin';
-    import { VFragment } from "~/components";
+    import { AdminWrapper, Title, VFragment } from '~/components';
 
     useHead({
         title: "Admin - Главная"
@@ -9,9 +8,9 @@
 </script>
 <template>
     <AdminWrapper>
-        <AdminTitle>
+        <Title>
             Главная
-        </AdminTitle>
+        </Title>
         <VFragment>
         </VFragment>
     </AdminWrapper>
