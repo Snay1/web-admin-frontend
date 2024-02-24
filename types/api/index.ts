@@ -14,4 +14,4 @@ export type { OzonInfoLimitType } from "./ozon/OzonInfoLimitType";
 
 // Wb
 
-export type { WbProductListType } from "./wb/WbProductListType";
+export type { WbProductListItemType } from "./wb/WbProductListItemType";

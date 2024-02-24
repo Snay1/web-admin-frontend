@@ -1,26 +1,23 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-import type { WbProductListType, OzonProductItemInfo, OzonInfoLimitType } from '~/types/api';
+import type { WbProductListItemType, OzonInfoLimitType } from '~/types/api';
 import { baseWbUrl } from '~/common';
 
 interface WbKeysObject {
     headerApiKey: string | null;
 }
 
-interface ProductUpdateType {
-    product_id: number;
-    offer_id: string;
-    price: string;
-    old_price: string;
-    min_price: string;
-    stocks: number;
+interface WbPriceInfoItemType {
+    discount: number;
+    nmId: number;
+    price: number;
+    promoCode: number;
 }
 
 const useWbProductsStore = defineStore("wbStore", {
     state: () => ({
-        itemsList: [] as WbProductListType[],
-        itemsInfoList: [] as OzonProductItemInfo[],
+        itemsList: [] as WbProductListItemType[],
         limits: null as OzonInfoLimitType | null ,
         status: {
             itemsList: {
@@ -45,7 +42,19 @@ const useWbProductsStore = defineStore("wbStore", {
             try {
                 this.status.itemsList.loading = true;
 
-                const res = await axios.post<{ cards: WbProductListType[] }>(`${baseWbUrl}/content/v2/get/cards/list`, {}, {
+                const res = await axios.post<{ cards: WbProductListItemType[] }>(`${baseWbUrl}/content/v2/get/cards/list`, {
+                    "settings": {
+                      "sort": {
+                        "ascending": false
+                      },
+                      "filter": {
+                        "withPhoto": -1
+                      },
+                      "cursor": {
+                        "limit":500
+                      }
+                    }
+                  }, {
                     headers: {
                         "Authorization": headerApiKey,
                     }
@@ -55,7 +64,41 @@ const useWbProductsStore = defineStore("wbStore", {
                     throw Error();
                 }
 
-                this.itemsList = res.data.cards;
+                const items = res.data.cards;
+
+                const resPrice = await axios.get<WbPriceInfoItemType[]>(`${baseWbUrl}/public/api/v1/info`, {
+                    headers: {
+                        "Authorization": headerApiKey,
+                    }
+                });
+
+                const pricesItems = resPrice.data;
+
+                if (!pricesItems) {
+                    throw Error();
+                }
+
+                const updatedItems = items.map((item) => {
+                    
+                    for (let i = 0; i < pricesItems.length; i++) {
+                        const priceItem = pricesItems[i];
+
+                        if (priceItem.nmId === item.nmID) {
+                            return {
+                                ...item,
+                                price: priceItem.price,
+                                discount: priceItem.discount,
+                                promoCode: priceItem.promoCode
+                            }
+                        }
+
+                    }
+
+                    return item;
+
+                })
+
+                this.itemsList = updatedItems;
 
                 this.status.itemsList.error = false;
             } catch (error) {
@@ -65,172 +108,6 @@ const useWbProductsStore = defineStore("wbStore", {
             }
 
         },
-        // async getOzonItemInfoList({
-        //     clientId,
-        //     apiKey,
-        // }: OzonKeysObject) {
-
-        //     if (!clientId || !apiKey || this.itemsInfoList.length) {
-        //         return;
-        //     }
- 
-        //     try {
-
-        //         const res = await axios.post<{ result: { items: OzonProductItemInfo[] } }>(`${baseOzonUrl}/v2/product/info/list`, {
-        //             offer_id: [],
-        //             product_id: this.itemsList.map((item) => item.product_id),
-        //             sku: [],
-        //         }, {
-        //             headers: {
-        //                 "Client-Id": clientId,
-        //                 "Api-Key": apiKey
-        //             }
-        //         });
-
-        //         if (!res.data) {
-        //             throw Error();
-        //         }
-
-        //         this.itemsInfoList = res.data.result.items;
-
-        //     } catch (error) {
-        //     }
-
-        // },
-        // async getOzonItemById(id: number, {
-        //     clientId,
-        //     apiKey,
-        // }: OzonKeysObject) {
-        //     if (!clientId || !apiKey || !id) {
-        //         return null;
-        //     }
-
-        //     const item = this.itemsInfoList.find((item) => item.id === id);
-
-        //     if (!item) {
-        //         return null;
-        //     }
-
-        //     return item;
-
-        // },
-        // async getOzonLimit({
-        //     clientId,
-        //     apiKey,
-        // }: OzonKeysObject) {
-
-        //     if (this.limits) {
-        //         return;
-        //     }
-
-        //     try {
-
-        //         this.status.limits.loading = true;
-        //         this.status.limits.error = false;
-
-        //         const res = await axios.post<OzonInfoLimitType>(`${baseOzonUrl}/v4/product/info/limit`, {
-        //             offer_id: [],
-        //             product_id: this.itemsList.map((item) => item.product_id),
-        //             sku: [],
-        //         }, {
-        //             headers: {
-        //                 "Client-Id": clientId,
-        //                 "Api-Key": apiKey
-        //             }
-        //         });
-    
-        //         if (!res.data) {
-        //             throw Error();
-        //         }
-
-        //         this.limits = res.data;
-
-        //     } catch (error) {
-        //         this.status.limits.error = true;
-        //     } finally {
-        //         this.status.limits.loading = false;
-        //     }
-
-        // },
-        // async updateProductById({
-        //     product_id,
-        //     offer_id,
-        //     price,
-        //     old_price,
-        //     min_price,
-        //     stocks,
-        // }: ProductUpdateType, {
-        //     clientId,
-        //     apiKey,
-        // }: OzonKeysObject) {
-
-        //     const headers = {
-        //         "Client-Id": clientId,
-        //         "Api-Key": apiKey
-        //     }
-
-        //     try {
-
-        //         const priceRes = await axios.post(`${baseOzonUrl}/v1/product/import/prices`, {
-        //             prices: [
-        //                 {
-        //                     auto_action_enabled: "UNKNOWN",
-        //                     currency_code: "RUB",
-        //                     price_strategy_enabled: "UNKNOWN",
-        //                     min_price,
-        //                     offer_id,
-        //                     old_price,
-        //                     price,
-        //                 }
-        //             ]
-        //         }, {
-        //             headers
-        //         });
-
-        //         if (!priceRes.data) {
-        //             throw Error();
-        //         }
-
-        //         const stocksRes = await axios.post(`${baseOzonUrl}/v1/product/import/stocks`, {
-        //             stocks: [
-        //                 {
-        //                     offer_id,
-        //                     product_id,
-        //                     stock: stocks,
-        //                 }
-        //             ]
-        //         }, {
-        //             headers
-        //         });
-
-        //         if (!stocksRes.data) {
-        //             throw Error();
-        //         }
-
-        //         this.itemsInfoList = [...this.itemsInfoList.map((item) => {
-
-        //             if (item.id === product_id) {
-        //                 return {
-        //                     ...item,
-        //                     price,
-        //                     stocks: {
-        //                         ...item.stocks,
-        //                         present: stocks,
-        //                     },
-        //                 }
-        //             }
-
-        //             return item;
-
-        //         })];
-
-        //         return true;
-
-        //     } catch (error) {
-        //     }
-
-        //     return false;
-        // }
     },
 });
 

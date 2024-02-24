@@ -2,6 +2,7 @@
     import { onMounted, ref } from 'vue';
     import { AdminWrapper, AdminTitle, AccessCheckHandler, AdminInput } from '~/components/admin';
     import { OzonItem } from '~/components/ozon-components';
+    import { MainGrid } from '~/components/index';
     import { useAccessStore, useOzonProductsStore } from "~/store";
 
     useHead({
@@ -38,7 +39,7 @@
                 @input="e => searchValue = e.target.value"
                 class="mb-[20px]"
             />
-            <ul class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-[20px]" v-if="ozonStore.itemsInfoList.length">
+            <MainGrid v-if="ozonStore.itemsInfoList.length">
                 <OzonItem 
                     v-for="item in ozonStore.itemsInfoList"
                     :image="item.primary_image"
@@ -48,7 +49,7 @@
                     :currency="item.currency_code"
                     :id="item.id"
                 />
-            </ul>
+            </MainGrid>
         </AccessCheckHandler>
     </AdminWrapper>
 </template>

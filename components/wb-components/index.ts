@@ -1,0 +1,1 @@
+export { default as WbItem } from "./WbItem.vue";
