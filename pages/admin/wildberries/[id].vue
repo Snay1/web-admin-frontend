@@ -4,7 +4,7 @@
     import { VFragment, Button } from '~/components';
     import { useAccessStore, useWbProductsStore } from "~/store";
     import type { WbProductListItemType } from "~/types/api";
-    import axios from "axios";
+    import axios from "~/axios";
     import { baseWbUrl } from "~/common";
 
     useHead({
@@ -29,6 +29,34 @@
         if (!product.value) {
             return;
         }
+
+        const result = {
+            price: false,
+        }
+
+        const priceUpdateHandler = async () => {
+            if (!price.value || !product.value) {
+                return;
+            }
+
+            const res = await wbStore.updateItemPriceById(product.value.nmID, Number(price.value), {
+                headerApiKey: access.wbKeys.headerApiKey
+            });
+
+            if (!res) {
+                return;
+            }
+
+            result.price = true;
+
+        }
+
+
+        await priceUpdateHandler();
+        
+
+        alert(`Цена: ${result.price ? "обновлена" : "ошибка"}; `);
+
     }
 
     onMounted(async () => {   
@@ -36,13 +64,13 @@
         loading.value = true;
         error.value = false;
 
-        await access.getOzonKeys();
+        
+        await access.getWbKeys();
 
         const key = {
             headerApiKey: access.wbKeys.headerApiKey
         }
 
-        await access.getWbKeys();
         await wbStore.getWbItemList(key);
         product.value = await wbStore.getWbItemById(Number(route.params.id));
         loading.value = false;

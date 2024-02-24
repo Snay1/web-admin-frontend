@@ -114,6 +114,33 @@ const useWbProductsStore = defineStore("wbStore", {
 
             return null;
 
+        },
+        async updateItemPriceById(id: number, price: number, {
+            headerApiKey
+        }: WbKeysObject) {
+            try {
+                const res = await axios.post(`${baseWbUrl}/public/api/v1/prices`, 
+                    [
+                        {
+                            nmId: id,
+                            price,
+                        }
+                    ]
+                , {
+                    headers: {
+                        "Authorization": headerApiKey,
+                    }
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                return true;
+
+            } catch (error) {
+                console.log("Не удалось обновить цену");
+            }
         }
     },
 });
