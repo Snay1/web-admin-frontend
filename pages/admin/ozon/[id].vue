@@ -1,11 +1,11 @@
 <script setup lang="ts">
     import { ref } from "vue";
-    import { AdminWrapper, AdminInput, AccessCheckHandler } from '~/components/admin';
+    import { AdminWrapper, AdminInput, AccessCheckHandler, CardImg } from '~/components/admin';
     import { VFragment, Button } from '~/components';
     import { useAccessStore, useOzonProductsStore } from "~/store";
     import type { OzonProductItemInfo } from "~/types/api";
-import axios from "axios";
-import { baseOzonUrl } from "~/common";
+    import axios from "axios";
+    import { baseOzonUrl } from "~/common";
 
     useHead({
         title: "Admin - Ozon"
@@ -104,7 +104,7 @@ import { baseOzonUrl } from "~/common";
             stocks.value = product.value.stocks.present;
             price.value = Number(product.value.price);
             oldPrice.value = Number(product.value.old_price);
-            minPrice.value = Number(product.value.min_price);
+            minPrice.value = Number(product.value.min_price) || 0;
             name.value = product.value.name;
         }
 
@@ -116,13 +116,10 @@ import { baseOzonUrl } from "~/common";
         <AccessCheckHandler shopName="Ozon" :accessExists="!!(access.ozonKeys.apiKey && access.ozonKeys.clientId)">
             <VFragment v-if="!error && !loading && product">
                 <div class="flex flex-col lg:flex-row gap-[20px]">
-                    <div class="w-full min-w-[300px] lg:max-w-[450px] h-[300px] xl:min-w-[450px] xl:h-[450px] bg-slate-200 rounded-lg border-solid border-[1px] border-slate-400">
-                        <img 
-                            :src="product.primary_image"
-                            :alt="product.name"
-                            class="w-full h-full object-cover rounded-lg" 
-                        />
-                    </div>
+                    <CardImg 
+                        :src="product.primary_image"
+                        :alt="product.name"
+                    />
                     <div class="w-full">
                         <h1 class="text-2xl font-bold mb-[20px]">{{ product.name }}</h1>
                         <!-- <div class="mb-[10px]">
@@ -144,7 +141,7 @@ import { baseOzonUrl } from "~/common";
                                 />
                             </div>
                             <div>
-                                <h4 class="mb-[10px] font-bold text-lg">Цена</h4>
+                                <h4 class="mb-[10px] font-bold text-lg">Цена (в рублях)</h4>
                                 <AdminInput 
                                     type="number"
                                     :value="price.toString()"
@@ -165,9 +162,9 @@ import { baseOzonUrl } from "~/common";
                                 <h4 class="mb-[10px] font-bold text-lg">Минимальная цена</h4>
                                 <AdminInput 
                                     type="number"
-                                    :value="oldPrice.toString()"
+                                    :value="minPrice.toString()"
                                     placeholder="Минимальная цена"
-                                    @input="(e) => oldPrice = e.target.value"
+                                    @input="(e) => minPrice = e.target.value"
                                 />
                             </div>
                         </div>

@@ -1,3 +1,5 @@
+import type { WbPriceInfoItemType } from "./WbPriceInfoItemType";
+
 export interface WbProductListCharacteristicType {
     id: number;
     name: string;
@@ -17,7 +19,7 @@ export interface WbProductListItemSizesType {
     wbSize: string;
 }
 
-export interface WbProductListItemType {
+export interface WbProductListItemType extends WbPriceInfoItemType {
     nmID: number;
     brand: string;
     characteristics: WbProductListCharacteristicType[];

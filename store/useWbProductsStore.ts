@@ -1,18 +1,11 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-import type { WbProductListItemType, OzonInfoLimitType } from '~/types/api';
+import type { WbProductListItemType, OzonInfoLimitType, WbPriceInfoItemType } from '~/types/api';
 import { baseWbUrl } from '~/common';
 
 interface WbKeysObject {
     headerApiKey: string | null;
-}
-
-interface WbPriceInfoItemType {
-    discount: number;
-    nmId: number;
-    price: number;
-    promoCode: number;
 }
 
 const useWbProductsStore = defineStore("wbStore", {
@@ -108,6 +101,20 @@ const useWbProductsStore = defineStore("wbStore", {
             }
 
         },
+        getWbItemById(id: number) {
+
+            for (let i = 0; i < this.itemsList.length; i++) {
+                const item = this.itemsList[i];
+
+                if (item.nmID === id) {
+                    return item;
+                }
+
+            }
+
+            return null;
+
+        }
     },
 });
 
