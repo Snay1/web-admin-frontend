@@ -1,6 +1,6 @@
 <script setup>
     import { AdminWrapper, Title, AccessCheckHandlerWb } from '~/components';
-    import { WbItem } from "~/components/wb-components/index";
+    import { WbItem, WbWarehouseSelect } from "~/components/wb-components";
     import { useWbProductsStore } from "~/store/index";
 
     useHead({
@@ -16,6 +16,7 @@
             Wildberries
         </Title>
         <AccessCheckHandlerWb>
+            <WbWarehouseSelect class="mb-[20px]" />
             <MainGrid v-if="wbStore && wbStore.itemsList.length">
                 <WbItem 
                     v-for="item in wbStore.itemsList"

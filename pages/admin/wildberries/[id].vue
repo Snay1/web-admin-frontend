@@ -1,6 +1,7 @@
 <script setup lang="ts">
     import { ref } from "vue";
     import { VFragment, Button, AdminWrapper, AccessCheckHandler, CardImg, CardInput } from '~/components';
+    import { WbWarehouseSelect } from "~/components/wb-components";
     import { useAccessStore, useWbProductsStore } from "~/store";
     import type { WbProductListItemType } from "~/types/api";
 
@@ -10,6 +11,8 @@
 
     const route = useRoute();
 
+    const paramId = Number(route.params.id);
+    
     const access = useAccessStore();
     const wbStore = useWbProductsStore();
 
@@ -95,9 +98,44 @@
 
     }
 
-    onMounted(async () => {   
+    const stocksHandler = async () => {
+        for (let i = 0; i < wbStore.barcodes.length; i++) {
+            const item = wbStore.barcodes[i];
 
-        const paramId = Number(route.params.id);
+            if (item.nmID === paramId) {
+
+                const barcodesItems = item.items;
+
+                let value = "";
+
+                const stocksRes = await wbStore.getStocks({
+                    skus: barcodesItems,
+                    nmID: paramId,
+                    headerApiKey: access.wbKeys.headerApiKey,
+                    warehouseId: wbStore.currentWarehouseId,
+                    isSellerWarehouse: wbStore.isSellerWarehouse,
+                });
+
+                if (typeof stocksRes === "boolean") {
+                    stocksLoaded.value = stocksRes;
+                }
+
+                for (let j = 0; j < barcodesItems.length; j++) {
+                    const el = barcodesItems[j];
+
+                    value += `${el.trim()};`;
+
+                }
+
+                barcodes.value = value;
+
+                return;
+            }
+
+        }
+    }
+
+    onMounted(async () => {   
 
         await access.getWbKeys();
 
@@ -119,34 +157,7 @@
 
             await wbStore.getBarcodes();
 
-            const findBarcodes = async () => {
-                for (let i = 0; i < wbStore.barcodes.length; i++) {
-                    const item = wbStore.barcodes[i];
-
-                    if (item.nmID === paramId) {
-
-                        const barcodesItems = item.items;
-
-                        let value = "";
-
-                        await wbStore.getStocks(barcodesItems);
-
-                        for (let j = 0; j < barcodesItems.length; j++) {
-                            const el = barcodesItems[j];
-
-                            value += `${el.trim()};`;
-
-                        }
-
-                        barcodes.value = value;
-
-                        return;
-                    }
-
-                }
-            }
-
-            findBarcodes();
+            stocksHandler();
 
             // stocks.value = product.value.stocks.present;
             price.value = Number(product.value.price);
@@ -176,6 +187,9 @@
                                 @input="(e) => name = e.target.value"
                             />
                         </div> -->
+                        <WbWarehouseSelect 
+                            class="mb-[10px]"
+                        />
                         <div class="mb-[10px]">
                             <CardInput 
                                 type="text"

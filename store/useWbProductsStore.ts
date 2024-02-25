@@ -2,17 +2,34 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 import mainAxios from '~/axios';
 
-import type { WbProductListItemType, WbPriceInfoItemType, WbBarcodeItemType } from '~/types/api';
+import type {
+    WbProductListItemType, 
+    WbPriceInfoItemType, 
+    WbBarcodeItemType, 
+    WbWarehouseItemType, 
+    WbWarehouseSellerItemType 
+} from '~/types/api';
 import { baseWbUrl } from '~/common';
 
 interface WbKeysObject {
     headerApiKey: string | null;
 }
 
+interface GetStocksAttributes extends WbKeysObject {
+    skus: string[];
+    nmID: number;
+    warehouseId: number;
+    isSellerWarehouse: boolean;
+}
+
 const useWbProductsStore = defineStore("wbStore", {
     state: () => ({
         itemsList: [] as WbProductListItemType[],
         barcodes: [] as WbBarcodeItemType[],
+        currentWarehouseId: -1,
+        isSellerWarehouse: false,
+        warehouses: [] as WbWarehouseItemType[],
+        sellerWarehouses: [] as WbWarehouseSellerItemType[],
         status: {
             itemsList: {
                 loading: true,
@@ -23,6 +40,14 @@ const useWbProductsStore = defineStore("wbStore", {
                 error: false,
             },
             barcodes: {
+                loading: true,
+                error: false, 
+            },
+            warehouses: {
+                loading: true,
+                error: false, 
+            },
+            sellerWarehouses: {
                 loading: true,
                 error: false, 
             }
@@ -158,6 +183,11 @@ const useWbProductsStore = defineStore("wbStore", {
             }
         },
         async getBarcodes() {
+
+            if (this.barcodes.length) {
+                return;
+            }
+
             try {
 
                 this.status.barcodes.loading = true;
@@ -205,9 +235,135 @@ const useWbProductsStore = defineStore("wbStore", {
                 return false;
             } 
         },
-        async getStocks(skus: string[]) {
+        async getWbWarehouses({
+            headerApiKey
+        }: WbKeysObject) {
+            try {
+                
+                if (this.warehouses.length) {
+                    return;
+                }
 
-        }
+                this.status.warehouses.loading = true;
+                
+                const res = await axios.get<WbWarehouseItemType[]>(`${baseWbUrl}/api/v3/offices`, {
+                    headers: {
+                        "Authorization": headerApiKey,
+                    },
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.warehouses = res.data.map((item) => {
+                    return {
+                        ...item,
+                        name: `${item.name} (WB)`,
+                    };
+                });
+                this.status.warehouses.error = false;
+
+                return true;
+
+            } catch (error) {
+                this.status.warehouses.error = true;
+                return false;
+            } finally {
+                this.status.warehouses.loading = false;
+            }
+        },
+        async getWbSellerWarehouses({
+            headerApiKey
+        }: WbKeysObject) {
+            try {
+
+                if (this.sellerWarehouses.length) {
+                    return;
+                }
+
+                this.status.sellerWarehouses.loading = true;
+                
+                const res = await axios.get<WbWarehouseSellerItemType[]>(`${baseWbUrl}/api/v3/warehouses`, {
+                    headers: {
+                        "Authorization": headerApiKey,
+                    }
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.sellerWarehouses = res.data.map((item) => {
+                    return {
+                        ...item,
+                        name: `${item.name} (Seller)`,
+                    };
+                });
+                this.status.sellerWarehouses.error = false;
+
+                return true;
+
+            } catch (error) {
+                this.status.sellerWarehouses.error = true;
+                return false;
+            } finally {
+                this.status.sellerWarehouses.loading = false;
+            }
+        },
+        selectWarehouse(id: number, isSellerWarehouse: boolean) {
+            this.currentWarehouseId = id;
+            this.isSellerWarehouse = isSellerWarehouse;
+        },
+        async getStocks({
+            skus, 
+            nmID, 
+            warehouseId, 
+            isSellerWarehouse,
+            headerApiKey,
+        }: GetStocksAttributes) {
+
+            if (!warehouseId || warehouseId === -1 || !skus.length) {
+                return;
+            }
+
+            try {
+                const res = await axios.post(`${baseWbUrl}/api/v3/stocks/${warehouseId}`, {
+                    skus,
+                }, {
+                    headers: {
+                        "Authorization": headerApiKey,
+                    },
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.itemsList = this.itemsList.map((item) => {
+
+                    if (item.nmID === nmID) {
+                        return {
+                            ...item,
+                            stocks: {
+                                sellerWarehouse: isSellerWarehouse ? warehouseId : item.stocks.sellerWarehouse,
+                                wbWarehouse: !isSellerWarehouse ? warehouseId : item.stocks.wbWarehouse,
+                            }
+                        };
+                    }
+
+                    return item;
+
+                });
+
+                return true;
+
+            } catch (error) {
+                return false;
+            }
+
+        },
+
     },
 });
 

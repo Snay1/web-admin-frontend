@@ -19,7 +19,7 @@ export interface WbProductListItemSizesType {
     wbSize: string;
 }
 
-export interface WbProductListItemType extends WbPriceInfoItemType {
+export interface WbProductListItemType {
     nmID: number;
     brand: string;
     characteristics: WbProductListCharacteristicType[];
@@ -39,4 +39,11 @@ export interface WbProductListItemType extends WbPriceInfoItemType {
     title: string;
     updatedAt: string;
     vendorCode: string;
+    discount: number;
+    price: number;
+    promoCode: number;
+    stocks: {
+        sellerWarehouse: number;
+        wbWarehouse: number;
+    };
 }

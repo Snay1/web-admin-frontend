@@ -1,6 +1,6 @@
 export interface WbPriceInfoItemType {
-    discount: number;
     nmId: number;
+    discount: number;
     price: number;
     promoCode: number;
 }

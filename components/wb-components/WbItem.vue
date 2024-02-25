@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { sliceItemNameHandler } from '~/usable';
+    import { sliceItemNameHandler } from '~/usable';
+    import { useWbProductsStore } from '~/store';
 
     defineProps({
         id: {

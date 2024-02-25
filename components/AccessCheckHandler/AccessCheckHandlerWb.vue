@@ -13,7 +13,10 @@
             headerApiKey: access.wbKeys.headerApiKey
         }
 
+        await wbStore.getBarcodes();
         await wbStore.getWbItemList(key);
+        await wbStore.getWbWarehouses(key);
+        await wbStore.getWbSellerWarehouses(key);
     });
 
 </script>
