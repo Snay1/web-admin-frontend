@@ -195,6 +195,9 @@ const useWbProductsStore = defineStore("wbStore", {
                 return false;
             } 
         },
+        async getStocks(skus: string[]) {
+            
+        }
     },
 });
 

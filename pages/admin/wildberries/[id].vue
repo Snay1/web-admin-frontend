@@ -16,10 +16,13 @@
     const product = ref<WbProductListItemType | null>(null);
     const name = ref("");
     const stocks = ref(0);
+    const stocksLoaded = ref(false);
     const price = ref(0);
 
     const loading = ref(true);
     const error = ref(false);
+
+    const barcodes = ref<string>("");
 
     const saveProduct = async () => {
 
@@ -56,7 +59,45 @@
 
     }
 
+    const saveBarcodes = async () => {
+
+        const barcodesValue = barcodes.value.trim();
+        
+        if (!barcodesValue) {
+            return alert("Баркоды не вписаны!");
+        }
+        const barcodesItems = barcodesValue.split(";");
+        const resItems = [];
+
+        for (let i = 0; i < barcodesItems.length; i++) {
+
+            const item = barcodesItems[i].trim();
+
+            if (!item) {
+                continue;
+            }
+
+            resItems.push(item);
+
+        }
+
+        if (!resItems.length) {
+            return alert("Баркоды не вписаны!");
+        }
+
+        const res = await wbStore.createEditBarcode(Number(route.params.id), resItems);
+
+        if (!res) {
+            return alert("Не удалось сохранить баркоды");
+        }
+
+        return alert("Баркоды успешно сохранены");
+
+    }
+
     onMounted(async () => {   
+
+        const paramId = Number(route.params.id);
 
         await access.getWbKeys();
 
@@ -65,17 +106,48 @@
         }
 
         await wbStore.getWbItemList(key);
-        await wbStore.getBarcodes();
 
         loading.value = true;
         error.value = false;
 
-        product.value = await wbStore.getWbItemById(Number(route.params.id));
+        product.value = await wbStore.getWbItemById(paramId);
         loading.value = false;
 
         if (!product.value) {
             error.value = true;
         } else {
+
+            await wbStore.getBarcodes();
+
+            const findBarcodes = async () => {
+                for (let i = 0; i < wbStore.barcodes.length; i++) {
+                    const item = wbStore.barcodes[i];
+
+                    if (item.nmID === paramId) {
+
+                        const barcodesItems = item.items;
+
+                        let value = "";
+
+                        await wbStore.getStocks(barcodesItems);
+
+                        for (let j = 0; j < barcodesItems.length; j++) {
+                            const el = barcodesItems[j];
+
+                            value += `${el.trim()};`;
+
+                        }
+
+                        barcodes.value = value;
+
+                        return;
+                    }
+
+                }
+            }
+
+            findBarcodes();
+
             // stocks.value = product.value.stocks.present;
             price.value = Number(product.value.price);
             name.value = product.value.title;
@@ -104,13 +176,34 @@
                                 @input="(e) => name = e.target.value"
                             />
                         </div> -->
-                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-[10px]">
+                        <div class="mb-[10px]">
                             <CardInput 
-                                type="number"
-                                :value="stocks.toString()"
-                                placeholder="Количество товара на складе"
-                                @input="(e) => stocks = e.target.value"
+                                type="text"
+                                :value="barcodes.toString()"
+                                placeholder="Баркоды (вводить без пробела через ';')"
+                                @input="(e) => barcodes = e.target.value"
                             />
+                            <Button button-class="w-full mt-[10px]" @click="saveBarcodes">
+                                Сохранить баркоды
+                            </Button>
+                        </div>
+                        <div class="mb-[10px]">
+                            <VFragment v-if="barcodes.length">
+                                <CardInput 
+                                    type="number"
+                                    :value="stocks.toString()"
+                                    placeholder="Количество товара на складе"
+                                    @input="(e) => stocks = e.target.value"
+                                />
+                                <Button button-class="w-full mt-[10px]" @click="saveBarcodes">
+                                    Сохранить остатки
+                                </Button>
+                            </VFragment>
+                            <div class="mb-[10px] p-[12px] border-solid border-[1px] border-black rounded-md" v-else>
+                                Добавьте хотя бы один баркод, чтобы можно было получить остатки товаров.
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1">
                             <CardInput 
                                 type="number"
                                 :value="price.toString()"
