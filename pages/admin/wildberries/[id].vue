@@ -24,7 +24,7 @@
 
     const barcodes = ref<string>("");
 
-    const saveProduct = async () => {
+    const savePrice = async () => {
 
         if (!product.value) {
             return;
@@ -211,8 +211,8 @@
                                 @input="(e) => price = e.target.value"
                             />
                         </div>
-                        <Button buttonClass="w-full mt-[20px]" @click="saveProduct">
-                            Сохранить
+                        <Button buttonClass="w-full mt-[20px]" @click="savePrice">
+                            Сохранить цену
                         </Button>
                     </div>
                 </div>

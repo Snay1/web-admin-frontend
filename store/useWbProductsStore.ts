@@ -141,6 +141,16 @@ const useWbProductsStore = defineStore("wbStore", {
                     throw Error();
                 }
 
+                this.itemsList = this.itemsList.map((item) => {
+                    if (item.nmID === id) {
+                        return {
+                            ...item,
+                            price: price,
+                        }
+                    }
+                    return item;
+                })
+
                 return true;
 
             } catch (error) {
@@ -196,7 +206,7 @@ const useWbProductsStore = defineStore("wbStore", {
             } 
         },
         async getStocks(skus: string[]) {
-            
+
         }
     },
 });
