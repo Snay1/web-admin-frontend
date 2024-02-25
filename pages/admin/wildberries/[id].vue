@@ -1,10 +1,8 @@
 <script setup lang="ts">
     import { ref } from "vue";
-    import { VFragment, Button, AdminWrapper, Input, AccessCheckHandler, CardImg, CardInput } from '~/components';
+    import { VFragment, Button, AdminWrapper, AccessCheckHandler, CardImg, CardInput } from '~/components';
     import { useAccessStore, useWbProductsStore } from "~/store";
     import type { WbProductListItemType } from "~/types/api";
-    import axios from "~/axios";
-    import { baseWbUrl } from "~/common";
 
     useHead({
         title: "Admin - Wildberries"
@@ -60,10 +58,6 @@
 
     onMounted(async () => {   
 
-        loading.value = true;
-        error.value = false;
-
-        
         await access.getWbKeys();
 
         const key = {
@@ -71,6 +65,10 @@
         }
 
         await wbStore.getWbItemList(key);
+
+        loading.value = true;
+        error.value = false;
+
         product.value = await wbStore.getWbItemById(Number(route.params.id));
         loading.value = false;
 
