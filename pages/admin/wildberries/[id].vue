@@ -124,7 +124,6 @@
 
                 const stocksRes = await wbStore.getStocks({
                     skus: items,
-                    nmID: item.nmID,
                     headerApiKey: access.wbKeys.headerApiKey,
                     warehouseId: wbStore.currentWarehouseId,
                     isSellerWarehouse: wbStore.isSellerWarehouse,

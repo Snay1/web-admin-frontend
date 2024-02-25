@@ -18,7 +18,6 @@ interface WbKeysObject {
 
 interface GetStocksAttributes extends WbKeysObject {
     skus: string[];
-    nmID: number;
     warehouseId: number;
     isSellerWarehouse: boolean;
 }
@@ -117,7 +116,11 @@ const useWbProductsStore = defineStore("wbStore", {
                                 ...item,
                                 price: priceItem.price,
                                 discount: priceItem.discount,
-                                promoCode: priceItem.promoCode
+                                promoCode: priceItem.promoCode,
+                                stocks: {
+                                    sellerWarehouse: 0,
+                                    wbWarehouse: 0,
+                                },
                             }
                         }
 
@@ -328,11 +331,10 @@ const useWbProductsStore = defineStore("wbStore", {
         },
         selectWarehouse(id: number, isSellerWarehouse: boolean) {
             this.currentWarehouseId = id;
-            this.isSellerWarehouse = isSellerWarehouse;
+            this.isSellerWarehouse = isSellerWarehouse || false;
         },
         async getStocks({
             skus, 
-            nmID, 
             warehouseId, 
             isSellerWarehouse,
             headerApiKey,
@@ -357,35 +359,61 @@ const useWbProductsStore = defineStore("wbStore", {
 
                 this.itemsList = this.itemsList.map((item) => {
 
-                    if (item.nmID === nmID) {
+                    let amount = 0;
 
-                        let amount = 0;
-                        
-                        for (let i = 0; i < res.data.stocks.length; i++) {
-                            const stocksItem = res.data.stocks[i];
+                    for (let i = 0; i < res.data.stocks.length; i++) {
 
-                            for (let j = 0; j < this.itemsList.length; j++) {
-                                const wbItem = this.itemsList[j];
+                        const skuItem = res.data.stocks[i];
 
-                                if (wbItem.skus.indexOf(stocksItem.sku) !== -1) {
-                                    
-                                    amount = stocksItem.amount;
-                                    
-                                    break;
-                                }
-
-                            }
-
+                        if (item.skus.indexOf(skuItem.sku) === -1) {
+                            continue;
                         }
+
+                        amount = skuItem.amount;
 
                         return {
                             ...item,
                             stocks: {
-                                sellerWarehouse: isSellerWarehouse ? amount : (item.stocks?.sellerWarehouse || 0),
-                                wbWarehouse: !isSellerWarehouse ? amount : (item.stocks?.wbWarehouse || 0),
+                                sellerWarehouse: isSellerWarehouse ? skuItem.amount : (item.stocks?.sellerWarehouse),
+                                wbWarehouse: !isSellerWarehouse ? skuItem.amount : (item.stocks?.wbWarehouse),
                             }
                         };
+
                     }
+
+                    // if ( === nmID) {
+
+                    //     let amount = 0;
+                        
+                    //     for (let i = 0; i < res.data.stocks.length; i++) {
+                    //         const stocksItem = res.data.stocks[i];
+
+                    //         for (let j = 0; j < this.itemsList.length; j++) {
+                    //             const wbItem = this.itemsList[j];
+
+                    //             console.log(wbItem.skus)
+
+                    //             if (wbItem.skus.indexOf(stocksItem.sku) !== -1) {
+                                    
+                    //                 amount = stocksItem.amount;
+                                    
+                    //                 break;
+                    //             }
+
+                    //         }
+
+                    //     }
+
+                    //     console.log(amount)
+
+                    //     return {
+                    //         ...item,
+                    //         stocks: {
+                    //             sellerWarehouse: isSellerWarehouse ? amount : (item.stocks?.sellerWarehouse),
+                    //             wbWarehouse: !isSellerWarehouse ? amount : (item.stocks?.wbWarehouse),
+                    //         }
+                    //     };
+                    // }
                     
                     return item;
                     
@@ -420,6 +448,31 @@ const useWbProductsStore = defineStore("wbStore", {
                 if (!res.data) {
                     throw Error();
                 }
+
+                this.itemsList = this.itemsList.map((item) => {
+
+                    for (let i = 0; i < stocks.length; i++) {
+                        const stockItem = stocks[i];
+
+                        const isSku = item.skus.indexOf(stockItem.sku) !== -1;
+
+                        if (!isSku) {
+                            continue;
+                        }
+
+                        if (this.isSellerWarehouse) {
+
+                            item.stocks.sellerWarehouse = stockItem.amount;
+
+                            continue;
+                        }
+
+                        item.stocks.wbWarehouse = stockItem.amount;
+
+                    }
+
+                    return item;
+                });
 
                 return true;
 

@@ -40,7 +40,7 @@
             </h3>
             <div class="text-lg">
                 <p>{{ Number(price) }} Р</p>
-                <p>Остаток на складе: <span :style="{ color: stocks === 0 ? 'red' : '' }">{{ stocks }}</span></p>
+                <p>Остаток на складе: <span :style="{ color: !stocks ? 'red' : '' }">{{ typeof stocks === "number" ? stocks : "-" }}</span></p>
             </div>
         </NuxtLink>
     </li>

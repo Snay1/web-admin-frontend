@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
     import { AdminWrapper, Title, AccessCheckHandlerWb } from '~/components';
     import { WbItem, WbWarehouseSelect } from "~/components/wb-components";
     import { useWbProductsStore } from "~/store/index";
@@ -23,7 +23,7 @@
                     :image="item.photos.length ? item.photos[0].big : ''"
                     :name="item.title"
                     :price="item.price"
-                    :stocks="0"
+                    :stocks="wbStore.isSellerWarehouse ? (item.stocks?.sellerWarehouse) : item.stocks?.wbWarehouse"
                     :id="item.nmID"
                 />
             </MainGrid>
