@@ -1,10 +1,7 @@
-<script setup>
-  import { LimitsInfo } from '~/components';
-  import { useUserStore } from "~/store";
+<script lang="ts" setup>
 
-  const router = useRouter();
+  import { useWbProductsStore } from './store';
 
-  const userStore = useUserStore();
   const wbStore = useWbProductsStore();
 
   const currentWarehouseHandler = () => {
@@ -15,8 +12,6 @@
     if (!warehouseId) {
       return
     }
-
-    console.log(warehouseId)
 
     wbStore.selectWarehouse(Number(warehouseId), isSeller === "true");
 
@@ -30,6 +25,6 @@
 <template>
   <NuxtLayout>
     <NuxtPage />
-    <LimitsInfo v-if="userStore.user" />
+    <!-- <LimitsInfo v-if="userStore.user" /> -->
   </NuxtLayout>
 </template>

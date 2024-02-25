@@ -107,6 +107,23 @@
         wbStore.selectWarehouse(item.id, item.isSellerWarehouse);
         localStorage.setItem("selected-wb-warehouse-id", `${item.id}`);
         localStorage.setItem("selected-wb-warehouse-is-seller", `${item.isSellerWarehouse}`);
+
+        const skus: string[] = [];
+
+        for (let i = 0; i < wbStore.barcodes.length; i++) {
+            const item = wbStore.barcodes[i];
+
+            item.items.forEach((el) => skus.push(el));
+
+        }
+
+        wbStore.getStocks({
+            skus,
+            headerApiKey: access.wbKeys.headerApiKey,
+            warehouseId: wbStore.currentWarehouseId,
+            isSellerWarehouse: wbStore.isSellerWarehouse,
+        });
+
     }
 
     onMounted(async () => {
