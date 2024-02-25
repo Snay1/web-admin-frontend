@@ -65,6 +65,7 @@
         }
 
         await wbStore.getWbItemList(key);
+        await wbStore.getBarcodes();
 
         loading.value = true;
         error.value = false;

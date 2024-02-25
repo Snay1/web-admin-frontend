@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
+import mainAxios from '~/axios';
 
-import type { WbProductListItemType, OzonInfoLimitType, WbPriceInfoItemType } from '~/types/api';
+import type { WbProductListItemType, WbPriceInfoItemType, WbBarcodeItemType } from '~/types/api';
 import { baseWbUrl } from '~/common';
 
 interface WbKeysObject {
@@ -11,7 +12,7 @@ interface WbKeysObject {
 const useWbProductsStore = defineStore("wbStore", {
     state: () => ({
         itemsList: [] as WbProductListItemType[],
-        limits: null as OzonInfoLimitType | null ,
+        barcodes: [] as WbBarcodeItemType[],
         status: {
             itemsList: {
                 loading: true,
@@ -21,6 +22,10 @@ const useWbProductsStore = defineStore("wbStore", {
                 loading: true,
                 error: false,
             },
+            barcodes: {
+                loading: true,
+                error: false, 
+            }
         }
     }),
     actions: {
@@ -141,7 +146,55 @@ const useWbProductsStore = defineStore("wbStore", {
             } catch (error) {
                 console.log("Не удалось обновить цену");
             }
-        }
+        },
+        async getBarcodes() {
+            try {
+
+                this.status.barcodes.loading = true;
+
+                const res = await mainAxios.get("/wildberries/barcodes");
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.barcodes = res.data.result;
+
+            } catch (error) {
+                this.status.barcodes.error = true;
+            } finally {
+                this.status.barcodes.loading = false;
+            }
+        },
+        async createEditBarcode(nmID: number, items: string[]) {
+            try {
+
+                const res = await mainAxios.post("/wildberries/barcodes/create-update", {
+                    nmID,
+                    items,                    
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                this.barcodes = this.barcodes.map((item) => {
+                    if (item.nmID === nmID) {
+                        return {
+                            ...item,
+                            items,
+                        };
+                    }
+
+                    return item;
+                });
+
+                return true;
+
+            } catch (error) {
+                return false;
+            } 
+        },
     },
 });
 

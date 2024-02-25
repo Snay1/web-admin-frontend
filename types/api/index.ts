@@ -16,3 +16,4 @@ export type { OzonInfoLimitType } from "./ozon/OzonInfoLimitType";
 
 export type { WbProductListItemType } from "./wb/WbProductListItemType";
 export type { WbPriceInfoItemType } from "./wb/WbPriceInfoItemType";
+export type { WbBarcodeItemType } from "./wb/WbBarcodeItemType";
