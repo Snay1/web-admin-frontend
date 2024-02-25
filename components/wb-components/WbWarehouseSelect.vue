@@ -105,6 +105,8 @@
         isSelectOpen.value = false;
         searchValue.value = item.name;
         wbStore.selectWarehouse(item.id, item.isSellerWarehouse);
+        localStorage.setItem("selected-wb-warehouse-id", `${item.id}`);
+        localStorage.setItem("selected-wb-warehouse-is-seller", `${item.isSellerWarehouse}`);
     }
 
     onMounted(async () => {

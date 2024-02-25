@@ -19,3 +19,4 @@ export type { WbPriceInfoItemType } from "./wb/WbPriceInfoItemType";
 export type { WbBarcodeItemType } from "./wb/WbBarcodeItemType";
 export type { WbWarehouseItemType } from "./wb/WbWarehouseItemType";
 export type { WbWarehouseSellerItemType } from "./wb/WbWarehouseSellerItemType";
+export type { WbStockItemType } from "./wb/WbStockItemType";

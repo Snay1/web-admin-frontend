@@ -7,7 +7,8 @@ import type {
     WbPriceInfoItemType, 
     WbBarcodeItemType, 
     WbWarehouseItemType, 
-    WbWarehouseSellerItemType 
+    WbWarehouseSellerItemType, 
+    WbStockItemType
 } from '~/types/api';
 import { baseWbUrl } from '~/common';
 
@@ -20,6 +21,11 @@ interface GetStocksAttributes extends WbKeysObject {
     nmID: number;
     warehouseId: number;
     isSellerWarehouse: boolean;
+}
+
+interface SaveStocksAttributes extends WbKeysObject {
+    warehouseId: number;
+    stocks: WbStockItemType[];
 }
 
 const useWbProductsStore = defineStore("wbStore", {
@@ -199,6 +205,15 @@ const useWbProductsStore = defineStore("wbStore", {
                 }
 
                 this.barcodes = res.data.result;
+                this.itemsList = this.itemsList.map((item) => {
+                    
+                    const skusItems = this.barcodes.filter((barcodeItem) => barcodeItem.nmID === item.nmID);
+                    
+                    return {
+                        ...item,
+                        skus: skusItems.length ? skusItems[0].items : [],
+                    };
+                });
 
             } catch (error) {
                 this.status.barcodes.error = true;
@@ -328,7 +343,7 @@ const useWbProductsStore = defineStore("wbStore", {
             }
 
             try {
-                const res = await axios.post(`${baseWbUrl}/api/v3/stocks/${warehouseId}`, {
+                const res = await axios.post<{ stocks: WbStockItemType[] }>(`${baseWbUrl}/api/v3/stocks/${warehouseId}`, {
                     skus,
                 }, {
                     headers: {
@@ -343,17 +358,37 @@ const useWbProductsStore = defineStore("wbStore", {
                 this.itemsList = this.itemsList.map((item) => {
 
                     if (item.nmID === nmID) {
+
+                        let amount = 0;
+                        
+                        for (let i = 0; i < res.data.stocks.length; i++) {
+                            const stocksItem = res.data.stocks[i];
+
+                            for (let j = 0; j < this.itemsList.length; j++) {
+                                const wbItem = this.itemsList[j];
+
+                                if (wbItem.skus.indexOf(stocksItem.sku) !== -1) {
+                                    
+                                    amount = stocksItem.amount;
+                                    
+                                    break;
+                                }
+
+                            }
+
+                        }
+
                         return {
                             ...item,
                             stocks: {
-                                sellerWarehouse: isSellerWarehouse ? warehouseId : item.stocks.sellerWarehouse,
-                                wbWarehouse: !isSellerWarehouse ? warehouseId : item.stocks.wbWarehouse,
+                                sellerWarehouse: isSellerWarehouse ? amount : (item.stocks?.sellerWarehouse || 0),
+                                wbWarehouse: !isSellerWarehouse ? amount : (item.stocks?.wbWarehouse || 0),
                             }
                         };
                     }
-
+                    
                     return item;
-
+                    
                 });
 
                 return true;
@@ -363,6 +398,35 @@ const useWbProductsStore = defineStore("wbStore", {
             }
 
         },
+        async saveStocks({
+            headerApiKey,
+            warehouseId,
+            stocks,
+        }: SaveStocksAttributes) {
+            
+            if (!warehouseId || warehouseId === -1) {
+                return false;
+            }
+
+            try {
+                const res = await axios.put(`${baseWbUrl}/api/v3/stocks/${warehouseId}`, {
+                    stocks,
+                }, {
+                    headers: {
+                        "Authorization": headerApiKey,
+                    },
+                });
+
+                if (!res.data) {
+                    throw Error();
+                }
+
+                return true;
+
+            } catch (error) {
+                return false;
+            }
+        }
 
     },
 });

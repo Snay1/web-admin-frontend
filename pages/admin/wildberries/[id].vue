@@ -10,8 +10,6 @@
     });
 
     const route = useRoute();
-
-    const paramId = Number(route.params.id);
     
     const access = useAccessStore();
     const wbStore = useWbProductsStore();
@@ -26,6 +24,7 @@
     const error = ref(false);
 
     const barcodes = ref<string>("");
+    const barcodesItems = ref<string[]>([]);
 
     const savePrice = async () => {
 
@@ -69,12 +68,12 @@
         if (!barcodesValue) {
             return alert("Баркоды не вписаны!");
         }
-        const barcodesItems = barcodesValue.split(";");
+        const items = barcodesValue.split(";");
         const resItems = [];
 
-        for (let i = 0; i < barcodesItems.length; i++) {
+        for (let i = 0; i < items.length; i++) {
 
-            const item = barcodesItems[i].trim();
+            const item = items[i].trim();
 
             if (!item) {
                 continue;
@@ -94,34 +93,28 @@
             return alert("Не удалось сохранить баркоды");
         }
 
+        barcodesItems.value = resItems;
+
         return alert("Баркоды успешно сохранены");
 
     }
 
     const stocksHandler = async () => {
+
+        const paramId = Number(route.params.id);
+
         for (let i = 0; i < wbStore.barcodes.length; i++) {
             const item = wbStore.barcodes[i];
 
             if (item.nmID === paramId) {
 
-                const barcodesItems = item.items;
+                const items = item.items;
+                barcodesItems.value = items;
 
                 let value = "";
 
-                const stocksRes = await wbStore.getStocks({
-                    skus: barcodesItems,
-                    nmID: paramId,
-                    headerApiKey: access.wbKeys.headerApiKey,
-                    warehouseId: wbStore.currentWarehouseId,
-                    isSellerWarehouse: wbStore.isSellerWarehouse,
-                });
-
-                if (typeof stocksRes === "boolean") {
-                    stocksLoaded.value = stocksRes;
-                }
-
-                for (let j = 0; j < barcodesItems.length; j++) {
-                    const el = barcodesItems[j];
+                for (let j = 0; j < items.length; j++) {
+                    const el = items[j];
 
                     value += `${el.trim()};`;
 
@@ -129,13 +122,56 @@
 
                 barcodes.value = value;
 
+                const stocksRes = await wbStore.getStocks({
+                    skus: items,
+                    nmID: item.nmID,
+                    headerApiKey: access.wbKeys.headerApiKey,
+                    warehouseId: wbStore.currentWarehouseId,
+                    isSellerWarehouse: wbStore.isSellerWarehouse,
+                });
+
+                for (let i = 0; i < wbStore.itemsList.length; i++) {
+                    const item = wbStore.itemsList[i];
+
+                    if (item.nmID !== paramId) {
+                        continue;
+                    }
+
+                    stocks.value = wbStore.isSellerWarehouse ? item.stocks.sellerWarehouse : item.stocks.wbWarehouse;
+
+                    break;
+
+                }
+
+                if (typeof stocksRes === "boolean") {
+                    stocksLoaded.value = stocksRes;
+                }
+
                 return;
             }
 
         }
     }
+    
+    const saveStocks = async () => {
+
+        if (!barcodesItems.value.length) {
+            return;
+        }
+
+        await wbStore.saveStocks({
+            headerApiKey: access.wbKeys.headerApiKey,
+            warehouseId: wbStore.currentWarehouseId,
+            stocks: [{
+                sku: barcodesItems.value[0],
+                amount: Number(stocks.value),
+            }],
+        })
+    }
 
     onMounted(async () => {   
+
+        const paramId = Number(route.params.id);
 
         await access.getWbKeys();
 
@@ -151,15 +187,14 @@
         product.value = await wbStore.getWbItemById(paramId);
         loading.value = false;
 
+        await wbStore.getBarcodes();
+
         if (!product.value) {
             error.value = true;
         } else {
 
-            await wbStore.getBarcodes();
-
             stocksHandler();
 
-            // stocks.value = product.value.stocks.present;
             price.value = Number(product.value.price);
             name.value = product.value.title;
         }
@@ -187,9 +222,6 @@
                                 @input="(e) => name = e.target.value"
                             />
                         </div> -->
-                        <WbWarehouseSelect 
-                            class="mb-[10px]"
-                        />
                         <div class="mb-[10px]">
                             <CardInput 
                                 type="text"
@@ -202,6 +234,14 @@
                             </Button>
                         </div>
                         <div class="mb-[10px]">
+                            <WbWarehouseSelect 
+                                class="mb-[10px]"
+                            />
+                            <Button button-class="w-full" @click="stocksHandler">
+                                Получить остатки
+                            </Button>
+                        </div>
+                        <div class="mb-[10px]">
                             <VFragment v-if="barcodes.length">
                                 <CardInput 
                                     type="number"
@@ -209,7 +249,7 @@
                                     placeholder="Количество товара на складе"
                                     @input="(e) => stocks = e.target.value"
                                 />
-                                <Button button-class="w-full mt-[10px]" @click="saveBarcodes">
+                                <Button button-class="w-full mt-[10px]" @click="saveStocks">
                                     Сохранить остатки
                                 </Button>
                             </VFragment>

@@ -46,4 +46,5 @@ export interface WbProductListItemType {
         sellerWarehouse: number;
         wbWarehouse: number;
     };
+    skus: string[];
 }
