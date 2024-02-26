@@ -11,6 +11,7 @@ export { default as PageTop } from "./PageTop.vue";
 export { default as NavBar } from "./NavBar.vue";
 export { default as Input } from "./Input.vue";
 export { default as CardInput } from "./CardInput.vue";
+export { default as PaginationComponent } from "./PaginationComponent.vue";
 
 export { 
     AccessCheckHandler, 

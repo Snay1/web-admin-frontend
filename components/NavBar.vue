@@ -47,7 +47,7 @@
         }
 
         router.push("/");
-
+        document.location.href = document.location.origin;
     }
 
 </script>
