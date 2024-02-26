@@ -36,6 +36,28 @@ const useUserStore = defineStore("user", {
             }
 
         },
+        async register(email: string, password: string) {
+
+            if (!email|| !password) {
+                return;
+            }
+
+            try {
+                const res = await axios.post(`/auth/sign-up`, {
+                    email,
+                    password
+                });
+
+                if (res.status !== 201) {
+                    throw Error();
+                }
+
+                await this.fetchUser();
+
+            } catch (error) {
+                
+            }
+        },
         async login(email: string, password: string) {
 
             if (!email|| !password) {
