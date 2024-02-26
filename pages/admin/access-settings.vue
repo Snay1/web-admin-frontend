@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { ref } from "vue";
-    import { AdminWrapper, Title, Input } from '~/components';
+    import { AdminWrapper, Title, Input, VFragment } from '~/components';
     import { Button } from '~/components';
     import { useAccessStore } from "~/store";
 
@@ -9,6 +9,7 @@
     });
 
     const access = useAccessStore();
+    const user = useUserStore();
 
     const ozonApiKey = ref("");
     const ozonClientId = ref("");
@@ -109,6 +110,8 @@
         await access.getAvitoKeys();
         await access.getYandexMarketKeys();
 
+        console.log(user.user);
+
         ozonApiKey.value = access.ozonKeys.apiKey || "";
         ozonClientId.value = access.ozonKeys.clientId || "";
 
@@ -128,84 +131,94 @@
         <Title>
             Доступы к сервисам
         </Title>
-        <form @submit="saveOzonKeys">
-            <h2 class="text-xl font-bold">
-                Ozon
-            </h2>
-            <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <Input 
-                    placeholder="Api Key"
-                    :value="ozonApiKey"
-                    @input="(e) => ozonApiKey = e.target.value"
-                />
-                <Input 
-                    placeholder="Client Id"
-                    :value="ozonClientId"
-                    @input="(e) => ozonClientId = e.target.value"
-                />
-            </div>
-            <Button type="submit" buttonClass="w-full">
-                Сохранить
-            </Button>
-            <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
-        </form>
-        <form @submit="saveWbKeys" class="mt-[20px]">
-            <h2 class="text-xl font-bold">
-                Wildberries
-            </h2>
-            <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <Input 
-                    placeholder="Header Api Key"
-                    :value="wbHeaderApiKey"
-                    @input="(e) => wbHeaderApiKey = e.target.value"
-                />
-            </div>
-            <Button type="submit" buttonClass="w-full">
-                Сохранить
-            </Button>
-            <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
-        </form>
-        <form @submit="saveAvitoKeys" class="mt-[20px]">
-            <h2 class="text-xl font-bold">
-                Avito
-            </h2>
-            <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <Input 
-                    placeholder="client_id"
-                    :value="avitoClientId"
-                    @input="(e) => avitoClientId = e.target.value"
-                />
-                <Input 
-                    placeholder="client_secret"
-                    :value="avitoClientSecret"
-                    @input="(e) => avitoClientSecret = e.target.value"
-                />
-            </div>
-            <Button type="submit" buttonClass="w-full">
-                Сохранить
-            </Button>
-            <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
-        </form>
-        <form @submit="saveYandexMarketKeys" class="mt-[20px]">
-            <h2 class="text-xl font-bold">
-                Yandex Market
-            </h2>
-            <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
-                <Input 
-                    placeholder="client_id"
-                    :value="avitoClientId"
-                    @input="(e) => avitoClientId = e.target.value"
-                />
-                <Input 
-                    placeholder="client_secret"
-                    :value="avitoClientSecret"
-                    @input="(e) => avitoClientSecret = e.target.value"
-                />
-            </div>
-            <Button type="submit" buttonClass="w-full">
-                Сохранить
-            </Button>
-            <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
-        </form>
+        <VFragment v-if="user.user?.hasAccess">
+            <form @submit="saveOzonKeys">
+                <h2 class="text-xl font-bold">
+                    Ozon
+                </h2>
+                <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
+                    <Input 
+                        placeholder="Api Key"
+                        :value="ozonApiKey"
+                        @input="(e) => ozonApiKey = e.target.value"
+                    />
+                    <Input 
+                        placeholder="Client Id"
+                        :value="ozonClientId"
+                        @input="(e) => ozonClientId = e.target.value"
+                    />
+                </div>
+                <Button type="submit" buttonClass="w-full">
+                    Сохранить
+                </Button>
+                <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
+            </form>
+            <form @submit="saveWbKeys" class="mt-[20px]">
+                <h2 class="text-xl font-bold">
+                    Wildberries
+                </h2>
+                <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
+                    <Input 
+                        placeholder="Header Api Key"
+                        :value="wbHeaderApiKey"
+                        @input="(e) => wbHeaderApiKey = e.target.value"
+                    />
+                </div>
+                <Button type="submit" buttonClass="w-full">
+                    Сохранить
+                </Button>
+                <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
+            </form>
+            <!-- <form @submit="saveAvitoKeys" class="mt-[20px]">
+                <h2 class="text-xl font-bold">
+                    Avito
+                </h2>
+                <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
+                    <Input 
+                        placeholder="client_id"
+                        :value="avitoClientId"
+                        @input="(e) => avitoClientId = e.target.value"
+                    />
+                    <Input 
+                        placeholder="client_secret"
+                        :value="avitoClientSecret"
+                        @input="(e) => avitoClientSecret = e.target.value"
+                    />
+                </div>
+                <Button type="submit" buttonClass="w-full">
+                    Сохранить
+                </Button>
+                <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
+            </form>
+            <form @submit="saveYandexMarketKeys" class="mt-[20px]">
+                <h2 class="text-xl font-bold">
+                    Yandex Market
+                </h2>
+                <div class="my-[20px] flex gap-[10px] flex-col md:flex-row">
+                    <Input 
+                        placeholder="client_id"
+                        :value="avitoClientId"
+                        @input="(e) => avitoClientId = e.target.value"
+                    />
+                    <Input 
+                        placeholder="client_secret"
+                        :value="avitoClientSecret"
+                        @input="(e) => avitoClientSecret = e.target.value"
+                    />
+                </div>
+                <Button type="submit" buttonClass="w-full">
+                    Сохранить
+                </Button>
+                <div class="mt-[20px] w-full h-[1px] bg-slate-800"></div>
+            </form> -->
+        </VFragment>
+        <div v-else>
+            <p class="text-center">
+                У вас нет доступа для пользования сервисом. <br /> Для его получения вам надо 
+                <a class="text-sky-600 underline" href="https://t.me/snayiii" target="_blank">
+                    связаться с создателем
+                </a>
+            </p>
+        </div>
     </AdminWrapper>
 </template>

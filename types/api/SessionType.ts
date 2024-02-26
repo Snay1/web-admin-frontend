@@ -3,4 +3,5 @@ export interface SessionType {
     email: string;
     iat: number;
     exp: number;
+    hasAccess: boolean;
 }

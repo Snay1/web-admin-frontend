@@ -158,6 +158,11 @@ const useWbProductsStore = defineStore("wbStore", {
             headerApiKey
         }: WbKeysObject) {
             try {
+
+                if (!headerApiKey) {
+                    return;
+                }
+
                 const res = await axios.post(`${baseWbUrl}/public/api/v1/prices`, 
                     [
                         {
@@ -258,7 +263,7 @@ const useWbProductsStore = defineStore("wbStore", {
         }: WbKeysObject) {
             try {
                 
-                if (this.warehouses.length) {
+                if (this.warehouses.length || !headerApiKey) {
                     return;
                 }
 
@@ -296,7 +301,7 @@ const useWbProductsStore = defineStore("wbStore", {
         }: WbKeysObject) {
             try {
 
-                if (this.sellerWarehouses.length) {
+                if (this.sellerWarehouses.length || !headerApiKey) {
                     return;
                 }
 
@@ -340,7 +345,7 @@ const useWbProductsStore = defineStore("wbStore", {
             headerApiKey,
         }: GetStocksAttributes) {
 
-            if (!warehouseId || warehouseId === -1 || !skus.length) {
+            if (!warehouseId || warehouseId === -1 || !skus.length || !headerApiKey) {
                 return;
             }
 
@@ -432,7 +437,7 @@ const useWbProductsStore = defineStore("wbStore", {
             stocks,
         }: SaveStocksAttributes) {
             
-            if (!warehouseId || warehouseId === -1) {
+            if (!warehouseId || warehouseId === -1 || !headerApiKey) {
                 return false;
             }
 

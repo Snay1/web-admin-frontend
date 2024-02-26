@@ -17,14 +17,14 @@
             title: "Wildberries",
             href: "/admin/wildberries",
         },
-        {
-            title: "Avito",
-            href: "/admin/avito",
-        },
-        {
-            title: "Yandex Market",
-            href: "/admin/yandex-market",
-        },
+        // {
+        //     title: "Avito",
+        //     href: "/admin/avito",
+        // },
+        // {
+        //     title: "Yandex Market",
+        //     href: "/admin/yandex-market",
+        // },
         {
             title: "Доступы к сервисам",
             href: "/admin/access-settings",

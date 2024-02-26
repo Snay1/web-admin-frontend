@@ -20,13 +20,13 @@ const useUserStore = defineStore("user", {
             try {
                 this.status.loading = true;
 
-                const res: SessionType = await axios(`/auth/session`);
+                const res = await axios<SessionType>(`/auth/session`);
 
-                if (!res) {
+                if (!res.data) {
                     throw Error();
                 }
 
-                this.user = res;
+                this.user = res.data;
 
                 this.status.error = false;
             } catch (error) {
