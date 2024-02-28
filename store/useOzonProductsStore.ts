@@ -51,7 +51,8 @@ const useOzonProductsStore = defineStore("ozonStore", {
                     headers: {
                         "Client-Id": clientId,
                         "Api-Key": apiKey
-                    }
+                    },
+                    withCredentials: true,
                 });
 
                 if (!res.data) {
@@ -87,7 +88,8 @@ const useOzonProductsStore = defineStore("ozonStore", {
                     headers: {
                         "Client-Id": clientId,
                         "Api-Key": apiKey
-                    }
+                    },
+                    withCredentials: true,
                 });
 
                 if (!res.data) {
@@ -139,7 +141,8 @@ const useOzonProductsStore = defineStore("ozonStore", {
                     headers: {
                         "Client-Id": clientId,
                         "Api-Key": apiKey
-                    }
+                    },
+                    withCredentials: true,
                 });
     
                 if (!res.data) {

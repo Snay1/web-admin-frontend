@@ -20,7 +20,9 @@ const useUserStore = defineStore("user", {
             try {
                 this.status.loading = true;
 
-                const res = await axios<SessionType>(`/auth/session`);
+                const res = await axios<SessionType>(`/auth/session`, {
+                    withCredentials: true,
+                });
 
                 if (!res.data) {
                     throw Error();
@@ -46,6 +48,8 @@ const useUserStore = defineStore("user", {
                 const res = await axios.post(`/auth/sign-up`, {
                     email,
                     password
+                }, {
+                    withCredentials: true,
                 });
 
                 if (res.status !== 201) {
@@ -68,6 +72,8 @@ const useUserStore = defineStore("user", {
                 const res = await axios.post(`/auth/sign-in`, {
                     email,
                     password
+                }, {
+                    withCredentials: true,
                 });
 
                 if (res.status !== 200) {
@@ -82,7 +88,9 @@ const useUserStore = defineStore("user", {
         },
         async logout() {
             try {
-                const res = await axios.post(`/auth/sign-out`);
+                const res = await axios.post(`/auth/sign-out`, null, {
+                    withCredentials: true,
+                });
 
                 if (res.status !== 200) {
                     return;

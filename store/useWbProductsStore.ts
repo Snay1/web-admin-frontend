@@ -206,7 +206,9 @@ const useWbProductsStore = defineStore("wbStore", {
 
                 this.status.barcodes.loading = true;
 
-                const res = await mainAxios.get("/wildberries/barcodes");
+                const res = await mainAxios.get("/wildberries/barcodes", {
+                    withCredentials: true,
+                });
 
                 if (!res.data) {
                     throw Error();

@@ -46,7 +46,9 @@ const useAccessStore = defineStore("access", {
             try {
                 this.status.ozon.loading = true;
 
-                const res = await axios<OzonKeysType>("/keys/ozon");
+                const res = await axios<OzonKeysType>("/keys/ozon", {
+                    withCredentials: true,
+                });
 
                 if (!res.data) {
                     throw Error();
@@ -69,6 +71,8 @@ const useAccessStore = defineStore("access", {
                 const res = await axios.post<OzonKeysType>("/keys/ozon", {
                     apiKey,
                     clientId
+                }, {
+                    withCredentials: true,
                 });
 
                 if (!res.data) {
@@ -95,7 +99,9 @@ const useAccessStore = defineStore("access", {
             try {
                 this.status.wb.loading = true;
 
-                const res = await axios<WbKeysType>("/keys/wildberries");
+                const res = await axios<WbKeysType>("/keys/wildberries", {
+                    withCredentials: true,
+                });
 
                 if (!res.data) {
                     throw Error();
@@ -117,6 +123,8 @@ const useAccessStore = defineStore("access", {
 
                 const res = await axios.post<WbKeysType>("/keys/wildberries", {
                     headerApiKey,
+                }, {
+                    withCredentials: true,
                 });
 
                 if (!res.data) {
@@ -143,7 +151,9 @@ const useAccessStore = defineStore("access", {
             try {
                 this.status.avito.loading = true;
 
-                const res = await axios<AvitoKeysType>("/keys/avito");
+                const res = await axios<AvitoKeysType>("/keys/avito", {
+                    withCredentials: true,
+                });
 
                 if (!res.data) {
                     throw Error();
@@ -166,6 +176,8 @@ const useAccessStore = defineStore("access", {
                 const res = await axios.post<AvitoKeysType>("/keys/avito", {
                     client_id,
                     client_secret
+                }, {
+                    withCredentials: true,
                 });
 
                 if (!res.data) {
@@ -192,7 +204,9 @@ const useAccessStore = defineStore("access", {
             try {
                 this.status.yandexMarket.loading = true;
 
-                const res = await axios<YandexMarketKeysType>("/keys/yandex-market");
+                const res = await axios<YandexMarketKeysType>("/keys/yandex-market", {
+                    withCredentials: true,
+                });
 
                 if (!res.data) {
                     throw Error();
@@ -215,6 +229,8 @@ const useAccessStore = defineStore("access", {
                 const res = await axios.post<YandexMarketKeysType>("/keys/yandex-market", {
                     client_id,
                     client_secret
+                }, {
+                    withCredentials: true,
                 });
 
                 if (!res.data) {
