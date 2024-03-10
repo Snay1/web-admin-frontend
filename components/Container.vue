@@ -13,7 +13,7 @@
 
         @include break-desk-big {
             width: 1024px;
-            padding: 0 10px;
+            padding: 0 20px;
         }
 
         @include break-desk {

@@ -1,8 +1,18 @@
 <script setup lang="ts">
     import { Header } from "~/components";
-    import { InitialSection } from "~/components/LandingPage";
+    import { InitialSection, PriceSection } from "~/components/LandingPage";
 </script>
 <template>
-    <Header />
-    <InitialSection />
+    <div class="flex flex-col">
+        <Header />
+        <main class="main">
+            <InitialSection />
+            <PriceSection />
+        </main>
+    </div>
 </template>
+<style lang="scss" scoped>
+    .main {
+        flex: 1 1 100%;
+    }
+</style>

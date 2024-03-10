@@ -1,6 +1,7 @@
 <script lang="ts" setup>
     import { ref, onMounted, onUnmounted } from "vue";
     import { Container, Button } from "~/components";
+    import { Section } from "~/components/LandingPage";
     import InitialCard from "./InitialCard.vue";
 
     const interval = ref<null | number>(null);
@@ -96,7 +97,7 @@
 
 </script>
 <template>
-    <section class="bg-[#292929] pt-[200px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
+    <Section class="pt-[200px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
         <div class="absolute top-0 left-0 w-[100%] h-[100%]">
             <img 
                 src="/public/initial-section-bg.png"
@@ -125,5 +126,5 @@
                 </Button>
             </div>
         </Container>
-    </section>
+    </Section>
 </template>
