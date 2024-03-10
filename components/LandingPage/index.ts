@@ -1,0 +1,1 @@
+export { default as InitialSection } from "./InitialSection.vue";

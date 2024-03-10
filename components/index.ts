@@ -13,6 +13,10 @@ export { default as Input } from "./Input.vue";
 export { default as CardInput } from "./CardInput.vue";
 export { default as PaginationComponent } from "./PaginationComponent.vue";
 
+export { default as Logo } from "./Logo.vue";
+export { default as Header } from "./Header.vue";
+export { default as Container } from "./Container.vue";
+
 export { 
     AccessCheckHandler, 
     AccessCheckHandlerWb, 

@@ -1,0 +1,37 @@
+
+@mixin fcc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin fcb {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin fc_ {
+    display: flex;
+    align-items: center;
+}
+
+// Displays 
+
+@mixin break-desk-big {
+    @media (max-width: 1200px) {
+        @content;
+    }
+}
+
+@mixin break-desk {
+    @media (max-width: 1023px) {
+        @content;
+    }
+}
+
+@mixin break-mobile {
+    @media (max-width: 767px) {
+        @content;
+    }
+}
