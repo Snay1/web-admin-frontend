@@ -1,1 +1,1 @@
-export { default as InitialSection } from "./InitialSection.vue";
+export { default as InitialSection } from "./InitialSection/index.vue";

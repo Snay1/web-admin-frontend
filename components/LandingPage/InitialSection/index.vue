@@ -1,9 +1,33 @@
 <script lang="ts" setup>
-    import { Container, Button } from "~/components";
     import { ref, onMounted, onUnmounted } from "vue";
+    import { Container, Button } from "~/components";
+    import InitialCard from "./InitialCard.vue";
 
     const interval = ref<null | number>(null);
     const iteration = ref<number>(0);
+
+    const items = [
+        {
+            isSoon: true,
+            src: "yandex-market-logo.png",
+            alt: "Yandex market лого"
+        },
+        {
+            isSoon: false,
+            src: "wb-logo.png",
+            alt: "Wb лого"
+        },
+        {
+            isSoon: false,
+            src: "ozon-logo.png",
+            alt: "Ozon лого"
+        },
+        {
+            isSoon: true,
+            src: "avito-logo.png",
+            alt: "Avito лого"
+        },
+    ];
 
     const titleStyleHandler = () => {
 
@@ -75,7 +99,7 @@
     <section class="bg-[#292929] pt-[200px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
         <div class="absolute top-0 left-0 w-[100%] h-[100%]">
             <img 
-                src="/assets/img/initial-section-bg.png"
+                src="/public/initial-section-bg.png"
                 alt="Фон"
                 class="w-full h-full object-cover"
             />
@@ -85,40 +109,12 @@
                 {{ valueHandler() }}
             </h1>
             <ul class="flex justify-center flex-wrap gap-[16px] mt-[40px] md:mt-[80px]">
-                <li class="w-[125px] h-[125px] relative rounded-[12px] overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-[5px] font-bold bg-[#56565699] text-white text-[16px]">
-                        скоро.
-                    </div>
-                    <img 
-                        src="/assets/img/yandex-market-logo.png"
-                        alt="Yandex market лого"
-                        class="w-full h-full"
-                    />
-                </li>
-                <li class="w-[125px] h-[125px] relative rounded-[12px] overflow-hidden">
-                    <img 
-                        src="/assets/img/wb-logo.png"
-                        alt="Wb лого"
-                        class="w-full h-full"
-                    />
-                </li>
-                <li class="w-[125px] h-[125px] relative rounded-[12px] overflow-hidden">
-                    <img 
-                        src="/assets/img/ozon-logo.png"
-                        alt="Ozon лого"
-                        class="w-full h-full"
-                    />
-                </li>
-                <li class="w-[125px] h-[125px] relative rounded-[12px] overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-center backdrop-blur-[5px] font-bold bg-[#56565699] text-white text-[16px]">
-                        скоро.
-                    </div>
-                    <img 
-                        src="/assets/img/avito-logo.png"
-                        alt="Avito лого"
-                        class="w-full h-full"
-                    />
-                </li>
+                <InitialCard 
+                    :isSoon="item.isSoon"
+                    :src="`_nuxt/${item.src}`"
+                    :alt="item.alt"
+                    v-for="item in items"
+                />
             </ul>
             <div class="flex flex-col gap-[20px] mt-[40px] md:mt-[80px] max-w-[230px] mx-auto">
                 <Button link="/login" buttonClass="!bg-[#3FBAFF]">
