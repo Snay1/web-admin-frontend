@@ -2,7 +2,7 @@
     import { Logo, Button, Container } from "~/components";
 </script>
 <template>
-    <header class="header absolute top-[24px] left-[50%] translate-x-[-50%] md:w-full z-50">
+    <header class="header absolute top-[24px] w-full z-50 flex justify-center">
         <Container class="header-content backdrop-blur-[10px]">
             <Logo />
             <Button link="/login" buttonClass="!bg-[#3FBAFF] text-[20px] w-full md:w-[150px]">
@@ -18,16 +18,18 @@
     .header {
         color: #fff;
 
-        @include break-mobile {
-            width: calc(100% - 24px);
-        }
-
         &-content {
             @include fcb;
             background-color: rgba(18, 18, 18, 0.25);
             border-radius: 12px;
             padding: 20px 24px !important;
             gap: 20px;
+
+            margin: 0 10px !important;
+
+            @include break-desk {
+                margin: 0;
+            }
 
             @include break-mobile {
                 flex-direction: column;

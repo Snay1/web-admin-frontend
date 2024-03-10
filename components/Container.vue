@@ -1,19 +1,22 @@
 <template>
-    <div class="container">
+    <div class="content-container">
         <slot />
     </div>
 </template>
 <style lang="scss" scoped>
-    .container {
+
+    @import "~/assets/css/usable/index.scss";
+
+    .content-container {
         width: 1190px;
         margin: 0 auto;
 
-        @media (max-width: 1200px) {
+        @include break-desk-big {
             width: 1024px;
             padding: 0 10px;
         }
 
-        @media (max-width: 1023px) {
+        @include break-desk {
             width: 100%;
         }
 
