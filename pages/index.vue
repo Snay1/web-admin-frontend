@@ -1,6 +1,11 @@
 <script setup lang="ts">
     import { Header } from "~/components";
-    import { FunctionalitySection, InitialSection, PriceSection } from "~/components/LandingPage";
+    import { 
+        FunctionalitySection, 
+        HowItWorksSection, 
+        InitialSection, 
+        PriceSection 
+    } from "~/components/LandingPage";
 </script>
 <template>
     <div class="flex flex-col">
@@ -9,6 +14,7 @@
             <InitialSection />
             <PriceSection />
             <FunctionalitySection />
+            <HowItWorksSection />
         </main>
     </div>
 </template>

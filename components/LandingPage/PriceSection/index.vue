@@ -12,8 +12,9 @@
         />
         <div class="absolute top-0 left-0 w-full h-full z-[2] backdrop-blur-[5px]">
         </div>
-        <div class="price-linear">
-
+        <div class="price-linear-top">
+        </div>
+        <div class="price-linear-bot">
         </div>
         <Container class="relative z-[4]">
             <Title>
@@ -48,14 +49,26 @@
 <style lang="scss" scoped>
     .price {
         &-linear {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: rgb(255,255,255);
-            background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgb(32 32 32) 100%);
-            z-index: 3;
+            &-top {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                background: rgb(255,255,255);
+                background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgb(32 32 32) 100%);
+                z-index: 3;
+            }
+            &-bot {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                background: rgb(255,255,255);
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgb(32 32 32) 100%);
+                z-index: 3;
+            }
         }
     }
 </style>

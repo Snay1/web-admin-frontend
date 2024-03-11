@@ -71,8 +71,11 @@
 
 </script>
 <template>
-    <Section class="py-[50px] md:py-[100px]">
-        <Container>
+    <Section class="py-[50px] md:py-[100px] relative">
+        <div class="functionality-linear-top">
+
+        </div>
+        <Container class="relative z-[3]">
             <Title>
                 Функционал
             </Title>
@@ -114,3 +117,19 @@
         </Container>
     </Section>
 </template>
+<style lang="scss" scoped>
+    .functionality {
+        &-linear {
+            &-top {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100px;
+                background: rgb(255,255,255);
+                background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, rgb(32 32 32) 100%);
+                z-index: 3;
+            }
+        }
+    }
+</style>
