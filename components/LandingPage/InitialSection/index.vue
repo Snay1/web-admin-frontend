@@ -105,7 +105,7 @@
                 class="w-full h-full object-cover"
             />
         </div>
-        <Container class="relative z-[2]">
+        <Container class="relative z-[3]">
             <h1 class="text-center text-[32px] md:text-[64px] font-bold transition-all" :style="{ 'transform': titleStyleHandler(), }">
                 {{ valueHandler() }}
             </h1>
@@ -126,5 +126,21 @@
                 </Button>
             </div>
         </Container>
+        <div class="initial-linear">
+        </div>
     </Section>
 </template>
+<style lang="scss" scoped>
+    .initial {
+        &-linear {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: rgb(255,255,255);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgb(32 32 32) 100%);
+            z-index: 2;
+        }
+    }
+</style>
