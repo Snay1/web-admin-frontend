@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { Section, Title } from "~/components/LandingPage";
+    import { Title } from "~/components/LandingPage";
     import { Container, Button } from "~/components";
     import ItemCard from "./ItemCard.vue";
     import SmallTitle from "./SmallTitle.vue";
@@ -71,7 +71,7 @@
 
 </script>
 <template>
-    <Section class="py-[50px] md:py-[100px] relative">
+    <section class="py-[50px] md:py-[100px] relative">
         <div class="functionality-linear-top">
 
         </div>
@@ -115,7 +115,7 @@
                 зарегистрироваться.
             </Button>
         </Container>
-    </Section>
+    </section>
 </template>
 <style lang="scss" scoped>
     .functionality {

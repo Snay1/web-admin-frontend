@@ -1,10 +1,19 @@
 <script setup lang="ts">
-    import { Logo, Button, Container } from "~/components";
+import { Logo, Button, Container } from "~/components";
 </script>
 <template>
     <header class="header absolute top-[24px] w-full z-50 flex justify-center">
         <Container class="header-content backdrop-blur-[10px]">
             <Logo />
+            <nav class="mr-auto ml-[20px] text-2xl font-medium">
+                <ul class="flex gap-[10px]">
+                    <li>
+                        <NuxtLink to="/guide" class="flex items-center justify-center transition-all hover:text-[#3FBAFF]">
+                            Гайд
+                        </NuxtLink>
+                    </li>
+                </ul>
+            </nav>
             <Button link="/login" buttonClass="!bg-[#3FBAFF] text-[20px] w-full md:w-[150px]">
                 войти.
             </Button>

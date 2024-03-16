@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-    import { Section, Title } from "~/components/LandingPage";
+    import { Title } from "~/components/LandingPage";
     import { Container, Button } from "~/components";
 </script>
 <template>
-    <Section class="py-[50px] md:py-[100px] text-white relative overflow-hidden">
+    <section class="py-[50px] md:py-[100px] text-white relative overflow-hidden">
         <img 
             src="public/how-it-works-bg.png"
             alt="Фон"
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </Container>
-    </Section>
+    </section>
 </template>
 <style lang="scss" scoped>
 

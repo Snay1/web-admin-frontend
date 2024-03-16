@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-    import { Section, Title } from "~/components/LandingPage";
+    import { Title } from "~/components/LandingPage";
     import { Button, Container } from "~/components";
     import PriceCard from "./PriceCard.vue";
 </script>
 <template>
-    <Section class="py-[50px] md:py-[100px] text-white relative">
+    <section class="py-[50px] md:py-[100px] text-white relative">
         <img 
             src="/public/price-section-bg.png"
             alt="Фон"
@@ -44,7 +44,7 @@
                 </Button>
             </div>
         </Container>
-    </Section>
+    </section>
 </template>
 <style lang="scss" scoped>
     .price {

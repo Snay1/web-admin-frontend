@@ -35,3 +35,8 @@
         @content;
     }
 }
+
+@mixin width-height($w, $h) {
+    width: $w;
+    height: $h;
+}

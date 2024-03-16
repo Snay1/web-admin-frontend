@@ -8,5 +8,5 @@ export default defineNuxtConfig({
   pinia: {
     storesDirs: ["./store/**"],
   },
-  css: ["~/assets/css/style.css"]
+  css: ["~/assets/css/style.scss"]
 })
