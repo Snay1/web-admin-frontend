@@ -96,7 +96,7 @@
 
 </script>
 <template>
-    <section class="bg-[#292929] pt-[200px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
+    <section class="bg-[#292929] pt-[260px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
         <div class="absolute top-0 left-0 w-[100%] h-[100%]">
             <img 
                 src="/initial-section-bg.png"
