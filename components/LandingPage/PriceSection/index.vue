@@ -4,7 +4,7 @@
     import PriceCard from "./PriceCard.vue";
 </script>
 <template>
-    <section class="py-[50px] md:py-[100px] text-white relative">
+    <section class="bg-[#292929] py-[50px] md:py-[100px] text-white relative">
         <img 
             src="/public/price-section-bg.png"
             alt="Фон"

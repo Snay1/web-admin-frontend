@@ -3,9 +3,9 @@
     import { Container, Button } from "~/components";
 </script>
 <template>
-    <section class="py-[50px] md:py-[100px] text-white relative overflow-hidden">
+    <section class="bg-[#292929] py-[50px] md:py-[100px] text-white relative overflow-hidden">
         <img 
-            src="public/how-it-works-bg.png"
+            src="/how-it-works-bg.png"
             alt="Фон"
             class="how-it-works-bg absolute top-0 left-0 w-full h-full opacity-50 object-cover"
         />
@@ -39,7 +39,7 @@
                         </Button>
                     </div>
                 </div>
-                <div class="w-full md:min-w-[350px] md:w-[350px] lg:min-w-[400px] lg:w-[400px] xl:min-w-[600px] xl:w-[600px]">
+                <!-- <div class="w-full md:min-w-[350px] md:w-[350px] lg:min-w-[400px] lg:w-[400px] xl:min-w-[600px] xl:w-[600px]">
                     <h3 class="text-[18px] md:text-[24px] uppercase font-bold">
                         Подробное видео
                     </h3>
@@ -47,7 +47,7 @@
                         <iframe class="w-full h-[300px] md:h-[400px]" width="560" height="315" src="https://www.youtube.com/embed/xJZa2_aldDs?si=-HFQ9vdSzS6Dr1WB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
                         </iframe>
                     </div>
-                </div>
+                </div> -->
                 <div class="w-full flex justify-center md:hidden">
                     <Button href="https://t.me/snayiii" buttonClass="!bg-[#5DCA82] !w-[200px]">
                         купить.

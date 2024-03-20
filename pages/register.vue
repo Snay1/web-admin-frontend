@@ -74,8 +74,16 @@
             <Button type="submit">
                 Зарегистрироваться
             </Button>
+            <p class="text-center text-xs">
+                Регистрируясь на сайте <br /> 
+                вы автоматически <br /> 
+                соглашаетесь с <br /> 
+                <NuxtLink to="/privacy" class="underline">
+                    политикой конфиденциальности
+                </NuxtLink>
+            </p>
             <div>
-                <p class="w-full text-center mt-[20px] mb-[10px]">Уже есть аккаунт?</p>
+                <p class="w-full text-center mb-[10px]">Уже есть аккаунт?</p>
                 <Button link="/login" buttonClass="!bg-[#3FBAFF]">
                     войти.
                 </Button>

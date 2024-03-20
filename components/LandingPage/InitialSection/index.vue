@@ -96,10 +96,10 @@
 
 </script>
 <template>
-    <section class="pt-[200px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
+    <section class="bg-[#292929] pt-[200px] md:pt-[260px] pb-[100px] md:pb-[160px] text-white relative">
         <div class="absolute top-0 left-0 w-[100%] h-[100%]">
             <img 
-                src="/public/initial-section-bg.png"
+                src="/initial-section-bg.png"
                 alt="Фон"
                 class="w-full h-full object-cover"
             />
@@ -111,7 +111,7 @@
             <ul class="flex justify-center flex-wrap gap-[16px] mt-[40px] md:mt-[80px]">
                 <InitialCard 
                     :isSoon="item.isSoon"
-                    :src="`_nuxt/${item.src}`"
+                    :src="`/${item.src}`"
                     :alt="item.alt"
                     v-for="item in items"
                 />

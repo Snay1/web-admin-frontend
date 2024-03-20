@@ -6,16 +6,16 @@
 
     const beforeItems = [
         {
-            icon: "_nuxt/public/wb-logo.png",
+            icon: "/wb-logo.png",
             alt: "Wb icon",
-            title: "WIldberries",
+            title: "Wildberries",
             items: [
                 'Возможность управлять остатками товаров на любом складе (склады продавца + WB склады).',
                 'Возможность менять цены товаров на любом складе (склады продавца  + WB склады).',
             ],
         },
         {
-            icon: "_nuxt/public/ozon-logo.png",
+            icon: "/ozon-logo.png",
             alt: "Ozon icon",
             title: "Ozon",
             items: [
@@ -27,16 +27,16 @@
 
     const afterItems = [
         {
-            icon: "_nuxt/public/wb-logo.png",
+            icon: "/wb-logo.png",
             alt: "Wb icon",
-            title: "WIldberries",
+            title: "Wildberries",
             items: [
                 'Полный контроль над любой карточкой товара.',
                 'Управление складами и пропусками.',
             ],
         },
         {
-            icon: "_nuxt/public/ozon-logo.png",
+            icon: "/ozon-logo.png",
             alt: "Ozon icon",
             title: "Ozon",
             items: [
@@ -44,7 +44,7 @@
             ],
         },
         {
-            icon: "_nuxt/public/yandex-market-logo.png",
+            icon: "/yandex-market-logo.png",
             alt: "Yandex market icon",
             title: "Яндекс маркет",
             items: [
@@ -52,7 +52,7 @@
             ],
         },
         {
-            icon: "_nuxt/public/avito-logo.png",
+            icon: "/avito-logo.png",
             alt: "Avito icon",
             title: "Авито",
             items: [
@@ -60,7 +60,7 @@
             ],
         },
         {
-            icon: "_nuxt/public/megamarket-logo.png",
+            icon: "/megamarket-logo.png",
             alt: "Megamarket icon",
             title: "Мегамаркет",
             items: [
@@ -71,7 +71,7 @@
 
 </script>
 <template>
-    <section class="py-[50px] md:py-[100px] relative">
+    <section class="bg-[#292929] py-[50px] md:py-[100px] relative">
         <div class="functionality-linear-top">
 
         </div>

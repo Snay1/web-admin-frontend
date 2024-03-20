@@ -1,15 +1,27 @@
 <script setup lang="ts">
-import { Logo, Button, Container } from "~/components";
+    import { Logo, Button, Container } from "~/components";
+
+    const navItems = [
+        // {
+        //     link: "/guide",
+        //     text: "Гайд"
+        // },
+        {
+            link: "/privacy",
+            text: "Политика"
+        },
+    ];
+
 </script>
 <template>
     <header class="header absolute top-[24px] w-full z-50 flex justify-center">
         <Container class="header-content backdrop-blur-[10px]">
             <Logo />
-            <nav class="mr-auto ml-[20px] text-2xl font-medium">
-                <ul class="flex gap-[10px]">
-                    <li>
-                        <NuxtLink to="/guide" class="flex items-center justify-center transition-all hover:text-[#3FBAFF]">
-                            Гайд
+            <nav class="w-full md:w-fit md:mr-auto md:ml-[20px] text-2xl font-medium">
+                <ul class="flex gap-[20px] flex-col items-center md:flex-row md:items-start">
+                    <li v-for="item in navItems">
+                        <NuxtLink :to="item.link" class="flex items-center justify-center transition-all hover:text-[#3FBAFF]">
+                            {{ item.text }}
                         </NuxtLink>
                     </li>
                 </ul>
