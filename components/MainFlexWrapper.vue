@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    import { Header } from "~/components";
+    import { Header, Footer } from "~/components";
 </script>
 <template>
     <div class="flex flex-col">
@@ -7,6 +7,7 @@
         <main class="main">
             <slot />
         </main>
+        <Footer />
     </div>
 </template>
 <style lang="scss" scoped>

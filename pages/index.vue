@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Header, MainFlexWrapper } from "~/components";
+    import { MainFlexWrapper } from "~/components";
     import { 
         FunctionalitySection, 
         HowItWorksSection, 
