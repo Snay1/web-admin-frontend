@@ -12,7 +12,7 @@
                 Все права защищены © {{ year }}
             </p>
             <ul>
-                <li>Самозанятый Тропин Степан Васильевич</li>
+                <!-- <li>Самозанятый Тропин Степан Васильевич</li> -->
                 <li>ИНН 291401505660</li>
                 <li>Почта для связи: <a href="mailto:marketplacehelpercall@gmail.com" class="underline">marketplacehelpercall@gmail.com</a></li>
                 <li>
